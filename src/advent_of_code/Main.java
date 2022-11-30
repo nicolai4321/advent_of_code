@@ -2,11 +2,12 @@ package advent_of_code;
 
 import advent_of_code.year2021.day02.Day02;
 import advent_of_code.year2021.day03.Day03;
+import advent_of_code.year2021.day04.Day04;
 
 public class Main {
 	public static void main(String[] args) {
 		System.out.println("Running\n");
-		Day day = new Day03();
+		Day day = new Day04();
 		
 		String result1 = day.run1();
 		System.out.println("Result part I:\n'" + result1 + "'\n");
