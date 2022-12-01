@@ -1,26 +1,26 @@
-package advent_of_code;
+package advent_of_code.utils;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class Utils {
+public class Read {
 	private static String BASE_PATH = "src/advent_of_code/";
 	/**
 	 * prints file to quickly see the content
 	 * @param path
 	 */
-	public static void printFile(String path) {
-		System.out.println(readFile(path));
+	public static void printFile(int year, int day, String fileName) {
+		Log.show(getString(year, day, fileName));
 	}
 	
 	/**
 	 * @param path
 	 * @return the content of the file as an array of ints
 	 */
-	public static int[] readFileAsInts(String path) {
-		String[] lines = readFileAsStrings(path);
+	public static int[] getInts(int year, int day, String fileName) {
+		String[] lines = getStrings(year, day, fileName);
 		int[] linesAsInt = new int[lines.length];
 		for (int i=0; i<lines.length; i++) {
 			String line = lines[i];
@@ -33,8 +33,8 @@ public class Utils {
 	 * @param path
 	 * @return the content of the file as an array of strings
 	 */
-	public static String[] readFileAsStrings(String path) {
-		String lines = readFile(path);
+	public static String[] getStrings(int year, int day, String fileName) {
+		String lines = getString(year, day, fileName);
 		return lines.split("\n");
 	}
 	
@@ -42,10 +42,10 @@ public class Utils {
 	 * @param path
 	 * @return the content of the file as a string
 	 */
-	public static String readFile(String path) {
-		String fullPath = BASE_PATH + path;
+	public static String getString(int year, int day, String fileName) {
+		String path = getPath(year, day, fileName);
 		try {
-			FileReader fileReader = new FileReader(fullPath);
+			FileReader fileReader = new FileReader(path);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			
 			String output = "";
@@ -64,5 +64,16 @@ public class Utils {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+	}
+	
+	/**
+	 * @param year
+	 * @param day
+	 * @param filename
+	 * @return the path
+	 */
+	private static String getPath(int year, int day, String fileName) {
+		String dayString = ((day + "").length() == 1) ? "0" + day : "" + day;
+		return BASE_PATH + "year" + year + "/day" + dayString + "/" + fileName;
 	}
 }

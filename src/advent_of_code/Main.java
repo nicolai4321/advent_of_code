@@ -1,19 +1,20 @@
 package advent_of_code;
 
-import advent_of_code.year2021.day02.Day02;
-import advent_of_code.year2021.day03.Day03;
-import advent_of_code.year2021.day04.Day04;
+import advent_of_code.utils.Day;
+import advent_of_code.utils.Log;
+import advent_of_code.year2022.day01.Day01;
 
 public class Main {
 	public static void main(String[] args) {
-		System.out.println("Running\n");
-		Day day = new Day04();
+		Log.show("#################");
+		Day day = new Day01();
 		
 		String result1 = day.run1();
-		System.out.println("Result part I:\n'" + result1 + "'\n");
-
+		Log.show("Result part I:\n'" + result1 + "'\n");
+		Log.show("#################");
+		
 		String result2 = day.run2();
-		System.out.println("Result part II:\n'" + result2 + "'\n");
-		System.out.println("Done");
+		Log.show("Result part II:\n'" + result2 + "'\n");
+		Log.show("#################");
 	}
 }

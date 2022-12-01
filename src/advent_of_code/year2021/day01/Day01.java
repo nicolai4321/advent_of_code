@@ -1,7 +1,7 @@
 package advent_of_code.year2021.day01;
 
-import advent_of_code.Day;
-import advent_of_code.Utils;
+import advent_of_code.utils.Day;
+import advent_of_code.utils.Read;
 
 public class Day01 implements Day {
 	@Override
@@ -41,12 +41,10 @@ public class Day01 implements Day {
 	}
 	
 	private static int[] example() {
-		String path = "year2021/day01/example01.txt";
-		return Utils.readFileAsInts(path); 
+		return Read.getInts(2021, 1, "example01.txt"); 
 	}
 	
 	private static int[] input() {
-		String path = "year2021/day01/input01.txt";
-		return Utils.readFileAsInts(path); 
+		return Read.getInts(2021, 1, "input01.txt"); 
 	}
 }

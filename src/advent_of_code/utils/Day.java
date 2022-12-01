@@ -1,4 +1,4 @@
-package advent_of_code;
+package advent_of_code.utils;
 
 public interface Day {
 	/**

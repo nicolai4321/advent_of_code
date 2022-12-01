@@ -1,7 +1,7 @@
 package advent_of_code.year2021.day02;
 
-import advent_of_code.Day;
-import advent_of_code.Utils;
+import advent_of_code.utils.Day;
+import advent_of_code.utils.Read;
 
 public class Day02 implements Day {
 
@@ -54,12 +54,10 @@ public class Day02 implements Day {
 	}
 
 	private String[] getExample() {
-		String path = "year2021/day02/example01.txt";
-		return Utils.readFileAsStrings(path);
+		return Read.getStrings(2021, 2, "example01.txt");
 	}
 	
 	private String[] getInput() {
-		String path = "year2021/day02/input01.txt";
-		return Utils.readFileAsStrings(path);
+		return Read.getStrings(2021, 2, "input01.txt");
 	}
 }

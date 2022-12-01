@@ -2,8 +2,8 @@ package advent_of_code.year2021.day03;
 
 import java.util.ArrayList;
 
-import advent_of_code.Day;
-import advent_of_code.Utils;
+import advent_of_code.utils.Day;
+import advent_of_code.utils.Read;
 
 public class Day03 implements Day {
 
@@ -151,13 +151,11 @@ public class Day03 implements Day {
 		return output;
 	}
 	
-	private String[] getExample() {
-		String path = "year2021/day03/example01.txt";
-		return Utils.readFileAsStrings(path);
+	private static String[] getExample() {
+		return Read.getStrings(2021, 3, "example01.txt"); 
 	}
 	
-	private String[] getInput() {
-		String path = "year2021/day03/input01.txt";
-		return Utils.readFileAsStrings(path);
+	private static String[] getInput() {
+		return Read.getStrings(2021, 3, "input01.txt"); 
 	}
 }

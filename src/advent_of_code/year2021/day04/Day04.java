@@ -3,15 +3,13 @@ package advent_of_code.year2021.day04;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import advent_of_code.Day;
-import advent_of_code.Utils;
+import advent_of_code.utils.Day;
+import advent_of_code.utils.Read;
 
 public class Day04 implements Day {
 	@Override
 	public String run1() {
-		//String path = "year2021/day04/example01.txt";
-		String path = "year2021/day04/input01.txt";
-		String input = Utils.readFile(path);
+		String input = Read.getString(2021, 4, "input01.txt");
 		
 		int[] numbers = getNumbers(input);
 		ArrayList<int[][]> boards = getBoards(input);
@@ -22,9 +20,7 @@ public class Day04 implements Day {
 
 	@Override
 	public String run2() {
-		//String path = "year2021/day04/example01.txt";
-		String path = "year2021/day04/input01.txt";
-		String input = Utils.readFile(path);
+		String input = Read.getString(2021, 04, "input01.txt");
 		
 		int[] numbers = getNumbers(input);
 		ArrayList<int[][]> boards = getBoards(input);
