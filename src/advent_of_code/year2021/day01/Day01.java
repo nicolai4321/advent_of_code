@@ -3,7 +3,7 @@ package advent_of_code.year2021.day01;
 import advent_of_code.utils.Day;
 import advent_of_code.utils.Read;
 
-public class Day01 implements Day {
+public class Day01 extends Day {
 	@Override
 	public String run1() {
 		Integer lastMeasurement = null;

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import advent_of_code.utils.Day;
 import advent_of_code.utils.Read;
 
-public class Day03 implements Day {
+public class Day03 extends Day {
 
 	@Override
 	public String run1() {		

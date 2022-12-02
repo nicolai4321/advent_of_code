@@ -6,7 +6,7 @@ import java.util.Collections;
 import advent_of_code.utils.Day;
 import advent_of_code.utils.Read;
 
-public class Day04 implements Day {
+public class Day04 extends Day {
 	@Override
 	public String run1() {
 		String input = Read.getString(2021, 4, "input01.txt");

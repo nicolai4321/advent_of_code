@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 import advent_of_code.utils.Day;
 import advent_of_code.utils.Read;
 
-public class Day05 implements Day {
+public class Day05 extends Day {
 	@Override
 	public String run1() {
 		String input = getInput();

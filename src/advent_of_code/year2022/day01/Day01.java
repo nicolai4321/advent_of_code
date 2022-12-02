@@ -6,7 +6,7 @@ import java.util.Collections;
 import advent_of_code.utils.Day;
 import advent_of_code.utils.Read;
 
-public class Day01 implements Day {
+public class Day01 extends Day {
 	@Override
 	public String run1() {
 		ArrayList<Integer> calories = getCalories(input().split("\n"));
