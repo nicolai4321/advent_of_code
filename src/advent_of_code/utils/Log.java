@@ -1,5 +1,7 @@
 package advent_of_code.utils;
 
+import java.util.ArrayList;
+
 public class Log {
 	/**
 	 * Quick way to show file
@@ -13,47 +15,44 @@ public class Log {
 	}
 	
 	/**
-	 * Quick way to show text
-	 * @param number
+	 * Show content
+	 * @param <T>
+	 * @param type
 	 */
-	public static void show(int number) {
-		show(number + "");
+	public static <T> void show(T type) {
+		System.out.println(type);
 	}
 	
 	/**
-	 * Quick way to show text
-	 * @param text
+	 * Show content of array
+	 * @param <T>
+	 * @param types
 	 */
-	public static void show(String text) {
-		System.out.println(text);
-	}
-	
-	/**
-	 * Quick way to show text
-	 * @param text
-	 */
-	private static void showOneLine(String text) {
-		System.out.print(text);
-	}
-
-	/**
-	 * Quick way to show strings
-	 * @param strings
-	 */
-	public static void show(String[] strings) {
-		for (String s : strings) {
-			showOneLine(s+ ",");
+	public static <T> void show(T[] types) {
+		for (T type : types) {
+			System.out.print(type + ",");
 		}
 		System.out.println();
 	}
 	
 	/**
-	 * Quick way to show numbers
 	 * @param numbers
 	 */
 	public static void show(int[] numbers) {
-		for (int number : numbers) {
-			showOneLine(number + ",");
+		for (int nr : numbers) {
+			System.out.print(nr + ",");
+		}
+		System.out.println();
+	}
+	
+	/**
+	 * Show content of array list
+	 * @param <T>
+	 * @param lst
+	 */
+	public static <T> void show(ArrayList<T> lst) {
+		for (T type : lst) {
+			System.out.print(type + ",");
 		}
 		System.out.println();
 	}
