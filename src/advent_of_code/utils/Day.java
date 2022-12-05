@@ -1,6 +1,8 @@
 package advent_of_code.utils;
 
 public abstract class Day {
+	protected boolean testEnabled = true;
+	
 	/**
 	 * @return result of part 1
 	 */
@@ -12,20 +14,24 @@ public abstract class Day {
 	public abstract String run2();
 	
 	public void run() {
-		if (test()) {
+		boolean test;
+		if (testEnabled) {
+			Log.disable();
+			test = test();
+			Log.enable();
+			Log.show("Test done...\n");
+		} else {
+			test = true;
+		}
+		
+		if (test) {
 			String run1 = run1();
-			Log.show("#################");
-			Log.show("Result part I:\n'" + run1 + "'");
-			Log.show("#################");
+			Log.show("#################### Result part I:'" + run1 + "'");
 
 			String run2 = run2();
-			Log.show("#################");
-			Log.show("Result part II:\n'" + run2 + "'");
-			Log.show("#################");
+			Log.show("#################### Result part II:'" + run2 + "'");
 		} else {
-			Log.show("#################");
-			Log.show("Test failed!");
-			Log.show("#################");
+			Log.show("#################### Test failed!");
 		}
 	}
 
