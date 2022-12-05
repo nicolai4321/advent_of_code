@@ -28,6 +28,10 @@ public class Day01 extends Day {
 		return calories.get(0) + calories.get(1) + calories.get(2);
 	}
 	
+	/**
+	 * @param input
+	 * @return calories
+	 */
 	private static ArrayList<Integer> getCalories(String[] input) {
 		ArrayList<Integer> calories = new ArrayList<Integer>();
 		int cal = 0;
@@ -41,6 +45,11 @@ public class Day01 extends Day {
 		}
 		calories.add(cal);
 		return calories;
+	}
+	
+	@Override
+	protected boolean test() {
+		return run1().equals("74198") && run2().equals("209914");
 	}
 	
 	private static String example() {

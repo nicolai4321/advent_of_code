@@ -33,7 +33,6 @@ public class Day03 extends Day {
 				group.add(rucksacks[i]);
 				group.add(rucksacks[i-1]);
 				group.add(rucksacks[i-2]);
-				
 				groups.add(group);
 				
 				counter = 0;
@@ -51,6 +50,10 @@ public class Day03 extends Day {
 		return points + "";
 	}
 	
+	/**
+	 * @param c
+	 * @return points given char c
+	 */
 	public static int getPoint(char c) {
 		int point;
 		
@@ -63,47 +66,48 @@ public class Day03 extends Day {
 		return point;
 	}
 	
-	
+	/**
+	 * @param group
+	 * @return common char in group
+	 */
 	public static char findCommons(ArrayList<String> group) {
 		for (char c : group.get(0).toCharArray()) {
 			
-			boolean allHaveIt = true;
+			boolean common = true;
 			for (String elf : group) {
 				if (!elf.contains(c + "")) {
-					allHaveIt = false;
+					common = false;
 				}
 			}
-			if (allHaveIt) {
+			if (common) {
 				return c;
 			}
 		}
 		
-		throw new RuntimeException("No char");
+		throw new RuntimeException("No common item between groups");
 	}
 	
-	
+	/**
+	 * @param rucksack
+	 * @return common char in rucksack
+	 */
 	public static char findCommon(String rucksack) {
 		int length = rucksack.length();
-		String com1 = rucksack.substring(0, length/2);
-		String com2 = rucksack.substring(length/2, length);
+		String rucksack0 = rucksack.substring(0, length/2);
+		String rucksack1 = rucksack.substring(length/2, length);
 		
-		for (char c : com1.toCharArray()) {
-			if (com2.contains(c+"")) {
+		for (char c : rucksack0.toCharArray()) {
+			if (rucksack1.contains(c + "")) {
 				return c;
 			}
 		}
 		
-		throw new RuntimeException("No char");
+		throw new RuntimeException("No common item in rucksack");
 	}
 
 	@Override
 	protected boolean test() {
-		if (!run1().equals("7716")) {
-			Log.show("run1() is false");
-			return false;
-		}
-		
-		return true;
+		return run1().equals("7716") && run2().equals("2973");
 	}
 
 	private static String[] example() {

@@ -7,71 +7,84 @@ public class Day02 extends Day {
 	@Override
 	public String run1() {
 		String[] input = input();
-		return getScore(input, true) + "";
+		return getTotalScore(input, false) + "";
 	}
 
 	@Override
 	public String run2() {
 		String[] input = input();
-		return getScore(input, false) + "";
+		return getTotalScore(input, true) + "";
 	}
 	
-	private int getScore(String[] rounds, boolean map1) {
+	/**
+	 * @param rounds
+	 * @param usePredictionMap
+	 * @return total score
+	 */
+	private int getTotalScore(String[] rounds, boolean usePredictionMap) {
 		int points = 0;
 		for (String round : rounds) {
-			String opp = round.split(" ")[0];
-			String you = round.split(" ")[1];
-			if (map1) {
-				points += getPoints(map1(opp), map1(you));				
+			String symbol0 = round.split(" ")[0];
+			String symbol1 = round.split(" ")[1];
+			if (usePredictionMap) {
+				points += getPoints(map(symbol0), predictionMap(map(symbol0), symbol1));
 			} else {
-				points += getPoints(map1(opp), map2(opp, you));
+				points += getPoints(map(symbol0), map(symbol1));				
 			}
 		}
 		return points;
 	}
 	
-	private static String map1(String s) {
-		if (s.equals("A") || s.equals("X")) {
+	/**
+	 * Maps hand to rock/paper/scissor (r/p/s)
+	 * @param hand
+	 * @return r/p/s
+	 */
+	private static String map(String hand) {
+		if (hand.equals("A") || hand.equals("X")) {
 			return "r";
-		} else if(s.equals("B") || s.equals("Y")) {
+		} else if(hand.equals("B") || hand.equals("Y")) {
 			return "p";
 		} else {
 			return "s";
 		}
 	}
 	
-	private static String map2(String opp, String you) {
-		if (opp.equals("A")) {
-			if (you.equals("X")) {
-				return "s";
-			} else if (you.equals("Y")) {
-				return "r";
-			} else { //Z
-				return "p";
-			}
-		} else if(opp.equals("B")) {
-			if (you.equals("X")) {
-				return "r";
-			} else if (you.equals("Y")) {
-				return "p";
-			} else { //Z
-				return "s";
-			}
-		} else { //C
-			if (you.equals("X")) {
-				return "p";
-			} else if (you.equals("Y")) {
-				return "s";
-			} else { //Z
-				return "r";
-			}
-		}
+	/**
+	 * 
+	 * @param opponent
+	 * @param prediction
+	 * @return hand of prediction
+	 */
+	private static String predictionMap(String opponent, String prediction) {
+		if (opponent.equals("r") && prediction.equals("X")) return "s";
+		if (opponent.equals("r") && prediction.equals("Y")) return "r";
+		if (opponent.equals("r") && prediction.equals("Z")) return "p";
+		
+		if (opponent.equals("p") && prediction.equals("X")) return "r";
+		if (opponent.equals("p") && prediction.equals("Y")) return "p";
+		if (opponent.equals("p") && prediction.equals("Z")) return "s";
+		
+		if (opponent.equals("s") && prediction.equals("X")) return "p";
+		if (opponent.equals("s") && prediction.equals("Y")) return "s";
+		if (opponent.equals("s") && prediction.equals("Z")) return "r";
+		
+		throw new RuntimeException("Could not calculate prediction");
 	}
 	
-	private static int getPoints(String opp, String you) {
-		return getPointsForItem(you) + getWinningOutcome(opp, you);
+	/**
+	 * @param opp
+	 * @param you
+	 * @return points
+	 */
+	public static int getPoints(String opp, String you) {
+		return getPointsForItem(you) + getWinningOutcomePoints(opp, you);
 	}
 	
+	/**
+	 * @param you
+	 * @return points for item
+	 */
 	public static int getPointsForItem(String you) {
 		if (you.equals("r")) {
 			return 1;
@@ -82,32 +95,30 @@ public class Day02 extends Day {
 		}
 	}
 	
-	public static int getWinningOutcome(String opp, String you) {
-		if (opp.equals("r")) {
-			if (you.equals("r")) {
-				return 3;
-			} else if (you.equals("p")) {
-				return 6;
-			} else { //s
-				return 0;
-			}
-		} else if (opp.equals("p")) {
-			if (you.equals("r")) {
-				return 0;
-			} else if (you.equals("p")) {
-				return 3;
-			} else { //s
-				return 6;
-			}
-		} else { //s
-			if (you.equals("r")) {
-				return 6;
-			} else if (you.equals("p")) {
-				return 0;
-			} else { //s
-				return 3;
-			}
-		}
+	/**
+	 * @param opp
+	 * @param you
+	 * @return points for winning outcome
+	 */
+	public static int getWinningOutcomePoints(String opp, String you) {		
+		if (opp.equals("r") && you.equals("r")) return 3;
+		if (opp.equals("r") && you.equals("p")) return 6;
+		if (opp.equals("r") && you.equals("s")) return 0;
+		
+		if (opp.equals("p") && you.equals("r")) return 0;
+		if (opp.equals("p") && you.equals("p")) return 3;
+		if (opp.equals("p") && you.equals("s")) return 6;	
+		
+		if (opp.equals("s") && you.equals("r")) return 6;
+		if (opp.equals("s") && you.equals("p")) return 0;
+		if (opp.equals("s") && you.equals("s")) return 3;
+		
+		throw new RuntimeException("Could not calculate outcome points");
+	}
+	
+	@Override
+	protected boolean test() {
+		return run1().equals("9177") && run2().equals("12111");
 	}
 	
 	private static String[] example() {
