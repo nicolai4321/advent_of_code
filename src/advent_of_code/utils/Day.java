@@ -26,6 +26,7 @@ public abstract class Day {
 		
 		if (test) {
 			String run1 = run1();
+
 			Log.show("#################### Result part I:'" + run1 + "'");
 
 			String run2 = run2();

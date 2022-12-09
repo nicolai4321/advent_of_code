@@ -31,10 +31,12 @@ public class Log {
 	 * @param types
 	 */
 	public static <T> void show(T[] types) {
+		String s = "[";
 		for (T type : types) {
-			print(type + ",");
+			s += type + ",";
 		}
-		println();
+		s = s.replaceAll(",$", "]\n");
+		print(s);
 	}
 	
 	/**
@@ -53,10 +55,37 @@ public class Log {
 	 * @param lst
 	 */
 	public static <T> void show(ArrayList<T> lst) {
+		String s = "[";
 		for (T type : lst) {
-			print(type + ",");
+			s += type + ",";
 		}
-		println();
+		s = s.replaceAll(",$", "]");
+		println(s);
+	}
+	
+	/**
+	 * Show content of an array of arrays
+	 * @param <T>
+	 * @param typesOfTypes
+	 */
+	public static <T> void showMatrix(T[][] typesOfTypes) {
+		String s = "[";
+		boolean first = true;
+		
+		for (T[] types : typesOfTypes) {
+			if (!first) {
+				s += " ";
+			}
+			
+			s += "[";
+			for (T type : types) {
+				s += type + ",";
+			}
+			s = s.replaceAll(",$", "],\n");
+			first = false;
+		}
+		s = s.replaceAll(",\n$", "]");
+		println(s);
 	}
 	
 	/**

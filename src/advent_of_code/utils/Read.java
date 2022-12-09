@@ -55,10 +55,10 @@ public class Read {
 			while ((line = bufferedReader.readLine()) != null) {
 				output += line + "\n";
 			}
-			
+
 			bufferedReader.close();
 			fileReader.close();
-			return output;
+			return output.replaceAll("\n$", "");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);

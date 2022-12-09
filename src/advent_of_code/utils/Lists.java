@@ -1,31 +1,63 @@
 package advent_of_code.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
-public class Lists {
+public class Lists extends ListConverter {
 	/**
-	 * @param listOfStrings
-	 * @return list of integers
+	 * @param input
+	 * @param rowsAreHorizontal
+	 * @return intsOfInts
 	 */
-	public static ArrayList<ArrayList<Integer>> toListOfInts(ArrayList<ArrayList<String>> listOfStrings) {
-		ArrayList<ArrayList<Integer>> ints = new ArrayList<ArrayList<Integer>>();
-		for (ArrayList<String> strings : listOfStrings) {
-			ints.add(toInts(strings));
-		}
-		return ints;
+	public static int[][] getStaticToIntss(String input, boolean rowsAreHorizontal) {
+		String[][] stringsOfStrings = getStatic(input.split("\n"), rowsAreHorizontal);
+		return stringssToIntss(stringsOfStrings);
 	}
-	
+
 	/**
-	 * @param strings
-	 * @return integers
+	 * @param input
+	 * @param rowsAreHorizontal
+	 * @return stringsOfStrings
 	 */
-	public static ArrayList<Integer> toInts(ArrayList<String> strings) {
-		ArrayList<Integer> ints = new ArrayList<Integer>();
-		for (String string : strings) {
-			ints.add(Integer.parseInt(string));
+	public static String[][] getStaticToStringss(String input, boolean rowsAreHorizontal) {
+		return getStatic(input.split("\n"), rowsAreHorizontal);
+	}
+
+	/**
+	 * @param input
+	 * @return stringsOfStrings
+	 */
+	public static String[][] getStatic(String[] input, boolean rowsAreHorizontal) {
+		int rowLength = input[0].length();
+		
+		for (int i=1; i<input.length; i++) {
+			String row = input[i];
+			if (row.length() != rowLength) {
+				throw new RuntimeException("The input is not static. Row 0 has length '" + rowLength + "' and row " + i + " has length '" + row.length() + "'");
+			}
 		}
-		return ints;
+
+		String[][] listOfStrings;
+		if (rowsAreHorizontal) {
+			listOfStrings = new String[input.length][rowLength];
+			for (int r=0; r<input.length; r++) {
+				char[] row = input[r].toCharArray();
+				for (int c=0; c<rowLength; c++) {
+					listOfStrings[r][c] = row[c] + "";
+				}
+			}
+		} else {
+			listOfStrings = new String[rowLength][input.length];
+			for (int r=0; r<input.length; r++) {
+				char[] row = input[r].toCharArray();
+				for (int c=0; c<rowLength; c++) {
+					listOfStrings[c][r] = row[c] + "";
+				}
+			}
+		}
+		
+		return listOfStrings;
 	}
 	
 	/**
@@ -55,7 +87,7 @@ public class Lists {
 					if (cellsHorizontal) {
 						dynamicGrid.remove(dynamicGrid.size() - 1);
 					}
-					return getList(dynamicGrid, cellsNormalOrder);
+					return orderList(dynamicGrid, cellsNormalOrder);
 				}
 				
 				int index;
@@ -77,7 +109,7 @@ public class Lists {
 			}
 		}
 		
-		return getList(dynamicGrid, cellsNormalOrder);
+		return orderList(dynamicGrid, cellsNormalOrder);
 	}
 	
 	/**
@@ -86,7 +118,7 @@ public class Lists {
 	 * @param reverse
 	 * @return A list of lists. The sub list can be reverted
 	 */
-	private static <T> ArrayList<ArrayList<T>> getList(ArrayList<ArrayList<T>> list, boolean cellsNormalOrder) {
+	private static <T> ArrayList<ArrayList<T>> orderList(ArrayList<ArrayList<T>> list, boolean cellsNormalOrder) {
 		if (!cellsNormalOrder) {
 			for (ArrayList<T> subList : list) {
 				Collections.reverse(subList);

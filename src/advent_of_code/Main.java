@@ -1,11 +1,14 @@
 package advent_of_code;
 
 import advent_of_code.utils.Day;
-import advent_of_code.year2022.day06.Day06;
+import advent_of_code.utils.Grid;
+import advent_of_code.utils.Log;
+import advent_of_code.utils.RootDay;
+import advent_of_code.year2022.day09.Day09;
 
 public class Main {
 	public static void main(String[] args) {
-		Day day = new Day06();
+		RootDay day = new Day09();
 		day.run();
 	}
 }
