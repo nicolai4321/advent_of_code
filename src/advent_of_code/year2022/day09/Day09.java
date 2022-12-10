@@ -7,7 +7,7 @@ import advent_of_code.utils.RootDay;
 
 public class Day09 extends RootDay {
 	public Day09() {
-		super(true, 5710, true, 2259);
+		super(true, "5710", true, "2259");
 	}
 
 	@Override
@@ -189,26 +189,17 @@ public class Day09 extends RootDay {
 	 * @param grid
 	 * @param start
 	 */
-	private void print(Pair[] knots, Grid grid, int startX, int startY) {
-		for(int x=0; x<grid.getWidth(); x++) {				
-			for (int y=0; y<grid.getHeight(); y++) {
-				String value = ".";
-				
-				if (startX == x && startY == y) {
-					value = "s";
-				}
-				
-				for (int i=knots.length-1; i>=0; i--) {
-					Pair knot = knots[i];
-					if (knot.getX() == x && knot.getY() == y) {
-						value = i + "";
-					}
-				}
-				System.out.print(value);
-			}
-			System.out.print("\n");
+	private void print(Pair[] knots, Grid visitingGrid, Integer startX, Integer startY) {
+		Grid<String> grid = new Grid<String>(visitingGrid.getWidth(), visitingGrid.getHeight(), true);
+		grid.set(".");
+		grid.set(startX, startY, "s");
+		grid.setDivider("");
+
+		for (int i=knots.length-1; 0<=i; i--) {
+			Pair knot = knots[i];
+			grid.set(knot.getX(), knot.getY(), i + "");
 		}
-		Log.show("");
+		grid.print();
 	}
 	
 	private static String[] example() {

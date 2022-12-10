@@ -46,7 +46,6 @@ public class Grid<T> {
 	}
 	
 	public void print() {
-		Log.show("B" + verticalGoesUp);
 		Log.show(toString());
 	}
 	

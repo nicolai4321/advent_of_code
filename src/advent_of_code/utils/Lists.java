@@ -1,7 +1,6 @@
 package advent_of_code.utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 public class Lists extends ListConverter {
@@ -113,6 +112,30 @@ public class Lists extends ListConverter {
 	}
 	
 	/**
+	 * @param ints
+	 * @return sum of the integers
+	 */
+	public static int sum(ArrayList<Integer> ints) {
+		int sum = 0;
+		for (int i : ints) {
+			sum += i;
+		}
+		return sum;
+	}
+	
+	/**
+	 * @param ints
+	 * @return sum of the integers
+	 */
+	public static int sum(int[] ints) {
+		int sum = 0;
+		for (int i : ints) {
+			sum += i;
+		}
+		return sum;
+	}
+	
+	/**
 	 * @param <T>
 	 * @param list
 	 * @param reverse
@@ -125,5 +148,6 @@ public class Lists extends ListConverter {
 			}
 		}
 		return list;
+
 	}
 }
