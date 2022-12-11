@@ -9,7 +9,7 @@ import advent_of_code.utils.RootDay;
 
 public class Day10 extends RootDay {
 	public Day10() {
-		super(true, "11720", true, null); //answer for run2=ERCREPCJ
+		super(true, true, "11720", true, true, null); //answer for run2=ERCREPCJ
 	}
 
 	@Override

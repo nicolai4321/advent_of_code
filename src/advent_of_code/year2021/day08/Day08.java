@@ -3,13 +3,14 @@ package advent_of_code.year2021.day08;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import advent_of_code.utils.Lists;
 import advent_of_code.utils.Log;
 import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day08 extends RootDay {
 	public Day08() {
-		super(true, null, true, null);
+		super(true, true, "532", true, true, "1011284");
 	}
 
 	@Override
@@ -23,23 +24,13 @@ public class Day08 extends RootDay {
 	public String run2() {
 		String[] input = input();
 		ArrayList<Integer> outputValues = outputValues(input);
-		return sum(outputValues) + "";
-	}
-	
-	private int sum(ArrayList<Integer> ints) {
-		int sum = 0;
-		for (int i : ints) {
-			sum += i;
-		}
-		return sum;
+		return Lists.sum(outputValues) + "";
 	}
 
 	private int count(ArrayList<ArrayList<Integer>> outputValues) {
 		int sum = 0;
 		for (ArrayList<Integer> outputLineValues : outputValues) {
-			for (Integer i : outputLineValues) {
-				sum++;
-			}
+			sum += outputLineValues.size();
 		}
 		return sum;
 	}
@@ -85,6 +76,7 @@ public class Day08 extends RootDay {
 			}
 			outputValues.add(Integer.parseInt(decoded));
 		}
+		
 		return outputValues;
 	}
 	
@@ -92,37 +84,38 @@ public class Day08 extends RootDay {
 		String delimeter = "|";
 		ArrayList<Integer> output = new ArrayList<Integer>();
 		HashMap<Integer, Display> iMap = new HashMap<Integer, Display>();
-		int repeat = 2;
+		int repeat = 3;
 		boolean outputState = false;
 		String[] codes = line.split(" ");
+		
 		for (int i=0; i<codes.length; i++) {
 			String code = codes[i];
 			
 			//0
-			if (code.length() == 6 &&
-					(iMap.get(6) != null && !iMap.get(6).contains(code) && iMap.get(9) != null && !iMap.get(9).contains(code))) {
+			if (code.length() == 6 && 
+					((containAndDifferent(iMap, 6, code) && containAndDifferent(iMap, 9, code)))) {
 				iMap.put(0, new Display(code, 0));
 			//1
 			} else if (code.length() == 2) {
 				iMap.put(1, new Display(code, 1));
 			//2
-			} else if ((code.length() == 5 && iMap.get(4) != null && iMap.get(4).shares(code) == 2) ||
-					(code.length() == 5 && iMap.get(3) != null && !iMap.get(3).contains(code) &&
-					code.length() == 5 && iMap.get(5) != null && !iMap.get(5).contains(code))) {
+			} else if (code.length() == 5 && 
+					(shares(iMap, 4, code, 2) || (containAndDifferent(iMap, 3, code) && containAndDifferent(iMap, 5, code)))) {
 				iMap.put(2, new Display(code, 2));
 			//3
-			} else if ((code.length() == 5 && iMap.get(1) != null && iMap.get(1).contains(code)) ||
-					(code.length() == 5 && iMap.get(2) != null && !iMap.get(2).contains(code) &&
-					code.length() == 5 && iMap.get(5) != null && !iMap.get(5).contains(code))) {
+			} else if (code.length() == 5 && 
+					(shares(iMap, 1, code, 2) || (containAndDifferent(iMap, 3, code) && containAndDifferent(iMap, 5, code)))) {
 				iMap.put(3, new Display(code, 3));
 			//4
 			} else if (code.length() == 4) {
 				iMap.put(4, new Display(code, 4));
 			//5
-			} else if (code.length() == 5 && iMap.get(6) != null && iMap.get(6).shares(code) == 5) {
+			} else if (code.length() == 5 && 
+					(shares(iMap, 6, code, 5) || ((containAndDifferent(iMap, 2, code) && containAndDifferent(iMap, 3, code))))) {
 				iMap.put(5, new Display(code, 5));
 			//6
-			} else if (code.length() == 6 && (iMap.get(1) != null && !iMap.get(1).contains(code))) {
+			} else if (code.length() == 6 && 
+					((containAndDifferent(iMap, 0, code) && containAndDifferent(iMap, 9, code)) || shares(iMap, 1, code, 1))) {
 				iMap.put(6, new Display(code, 6));
 			//7
 			} else if (code.length() == 3) {
@@ -131,11 +124,11 @@ public class Day08 extends RootDay {
 			} else if (code.length() == 7) {
 				iMap.put(8, new Display(code, 8));
 			//9
-			} else if (code.length() == 6 && (iMap.get(4) != null && iMap.get(4).shares(code) == 4)) {
+			} else if (code.length() == 6 && 
+					((containAndDifferent(iMap, 0, code) && containAndDifferent(iMap, 6, code)) || (shares(iMap, 4, code, 4)))) {
 				iMap.put(9, new Display(code, 9));
 			}
 
-			
 			if (outputState) {
 				Display display = null;
 				
@@ -148,9 +141,7 @@ public class Day08 extends RootDay {
 				}
 				
 				if (display == null) {
-					for (int key : iMap.keySet()) {
-						Log.show(key + ":" + iMap.get(key).getDisplay());
-					}
+					printMap(iMap);
 					throw new RuntimeException("Unknown code '" + code + "' for line '" + line + "'");
 				} else {
 					output.add(display.getValue());
@@ -162,11 +153,27 @@ public class Day08 extends RootDay {
 					outputState = true;
 				} else {
 					repeat--;
-					i = 0;
+					i = -1;
 				}
 			}
 		}
+		
 		return output;
+	}
+	
+	private boolean shares(HashMap<Integer, Display> iMap, int nr, String code, int shares) {
+		return iMap.get(nr) != null && iMap.get(nr).shares(code) == shares;
+	}
+	
+	private static void printMap(HashMap<Integer, Display> iMap) {
+		for (int key : iMap.keySet()) {
+			System.out.print("(" + key + "," + iMap.get(key).getCode() + ")");
+		}
+		Log.show("");
+	}
+	
+	private static boolean containAndDifferent(HashMap<Integer, Display> map, int nr, String code) {
+		return map.get(nr) != null && !map.get(nr).eq(code);
 	}
 	
 	private static String[] example() {

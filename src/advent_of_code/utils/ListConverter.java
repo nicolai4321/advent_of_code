@@ -17,6 +17,15 @@ public class ListConverter {
 		return ints;
 	}
 	
+	public static long[] stringsToLongs(String[] strings) {
+		long[] longs = new long[strings.length];
+		for (int i=0; i<longs.length; i++) {
+			int value = Integer.parseInt(strings[i]);
+			longs[i] = value;
+		}
+		return longs;
+	}
+	
 	/**
 	 * @param strings
 	 * @return bools
@@ -48,6 +57,14 @@ public class ListConverter {
 			integers.add(i);
 		}
 		return integers;
+	}
+	
+	public static ArrayList<Long> longsToAlLongs(long[] longs) {
+		ArrayList<Long> longAl = new ArrayList<Long>();
+		for (long i : longs) {
+			longAl.add(i);
+		}
+		return longAl;
 	}
 	
 	/**

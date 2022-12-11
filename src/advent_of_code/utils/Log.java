@@ -88,6 +88,20 @@ public class Log {
 		println(s);
 	}
 	
+	public static void warn(String string) {
+		printWarn(string);
+	}
+	
+	/**
+	 * Print if enabled
+	 * @param s
+	 */
+	private static void printWarn(String s) {
+		if (enabled) {
+			System.err.println(s);
+		}
+	}
+	
 	/**
 	 * Print if enabled
 	 * @param s

@@ -7,7 +7,7 @@ import advent_of_code.utils.RootDay;
 
 public class Day09 extends RootDay {
 	public Day09() {
-		super(true, "5710", true, "2259");
+		super(true, true, "5710", true, true, "2259");
 	}
 
 	@Override

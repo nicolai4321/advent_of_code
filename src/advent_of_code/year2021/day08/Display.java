@@ -22,17 +22,12 @@ public class Display {
 		return true;
 	}
 	
-	public boolean contains(String code) {
-		for (char c : code.toCharArray()) {
-			if (!display.contains(c+"")) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
 	public char[] getCodes() {
 		return display.toCharArray();
+	}
+	
+	public String getCode() {
+		return display;
 	}
 	
 	public void setValue(int value) {
@@ -54,7 +49,7 @@ public class Display {
 	}
 
 	public boolean eq(String code) {
-		return shares(code) == display.length();
+		return shares(code) == display.length() && shares(code) == code.length();
 	}
 
 	public String getDisplay() {
