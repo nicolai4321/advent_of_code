@@ -13,6 +13,29 @@ public class Grid<T> {
 		this.verticalGoesUp = verticalGoesUp;
 	}
 	
+	public Grid(String string, boolean verticalGoesUp) {
+		String[] strings = string.split("\n");
+		constructor(strings, verticalGoesUp);
+	}
+	
+	public Grid(String[] strings, boolean verticalGoesUp) {
+		constructor(strings, verticalGoesUp);
+	}
+
+	public static Grid<Integer> toIntGrid(Grid<String> grid) {
+		Grid<Integer> gridInt = new Grid<Integer>(grid.getWidth(), grid.getHeight(), grid.verticalGoesUp);
+		
+		for (int x=0; x<grid.getWidth(); x++) {
+			for (int y=0; y<grid.getHeight(); y++) {
+				String value = grid.get(x, y);
+				Integer i = Integer.parseInt(value);
+				gridInt.set(x, y, i);
+			}
+		}
+		
+		return gridInt;
+	}
+
 	public void set(T value) {
 		for (int row=0; row<grid.length; row++) {
 			for (int col=0; col<grid[0].length; col++) {
@@ -58,6 +81,10 @@ public class Grid<T> {
 		this.divider = divider;
 	}
 	
+	public boolean getVerticalGoesUp() {
+		return verticalGoesUp;
+	}
+	
 	@Override
 	public String toString() {
 		String s = "";
@@ -75,5 +102,26 @@ public class Grid<T> {
 			s = s.replaceAll(divider + "$", "") + "\n";
 		}
 		return s;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void constructor(String[] strings, boolean verticalGoesUp) {
+		int width = strings[0].length();
+		int height = strings.length;
+		
+		grid = (T[][]) new Object[height][width];
+		this.verticalGoesUp = verticalGoesUp;
+		
+		for (int y=0; y<height; y++) {
+			char[] row = strings[y].toCharArray();
+			for (int x=0; x<width; x++) {
+				T t = (T) (row[x] + "");
+				if (verticalGoesUp) {
+					set(x, (height-1) - y, t);
+				} else {
+					set(x, y, t);
+				}
+			}
+		}
 	}
 }

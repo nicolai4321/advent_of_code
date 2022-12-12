@@ -60,7 +60,7 @@ public abstract class RootDay {
 			}
 
 			String msg = SEPARATOR + "\n" +
-						 "Result part I:'" + run2 + "'\n" +
+						 "Result part II:'" + run2 + "'\n" +
 						 ((enableTest2) ? "" : "## TEST DISABLED ##\n") +
 						 SEPARATOR;
 			
