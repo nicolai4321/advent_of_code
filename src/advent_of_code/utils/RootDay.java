@@ -38,7 +38,7 @@ public abstract class RootDay {
 			String run1 = run1();
 			
 			if (enableTest1 && result1 != null && !result1.equals(run1)) {
-				throw new RuntimeException("Run 1 failed!");
+				throw new RuntimeException("Run 1 failed!: " + run1);
 			}
 			
 			String msg = SEPARATOR + "\n" +
@@ -56,7 +56,7 @@ public abstract class RootDay {
 			String run2 = run2();
 
 			if (enableTest2 && result2 != null && !result2.equals(run2)) {
-				throw new RuntimeException("Run 2 failed!");
+				throw new RuntimeException("Run 2 failed!: " + run2);
 			}
 
 			String msg = SEPARATOR + "\n" +

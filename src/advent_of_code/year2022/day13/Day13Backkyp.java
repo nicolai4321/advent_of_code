@@ -2,16 +2,13 @@ package advent_of_code.year2022.day13;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import advent_of_code.utils.Log;
 import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
-//TODO refactor
-public class Day13 extends RootDay {
-	public Day13() {
+public class Day13Backkyp extends RootDay {
+	public Day13Backkyp() {
 		super(true, true, "4809", true, true, "22600");
 	}
 
@@ -57,8 +54,10 @@ public class Day13 extends RootDay {
 					}
 				}
 			}
+			
 		}
 		
+		Log.show(nr);
 		
 		return sum;
 	}
@@ -154,6 +153,18 @@ public class Day13 extends RootDay {
 
 		throw new RuntimeException("Unknown comparision: " + item0.toString() + " & " + item1.toString());
 	} 
+
+	private int charToInt(char c) {
+		return c - 48;
+	}
+	
+	private boolean isInt(char c) {
+		return (c + "").matches("[0-9]");
+	}
+	
+	private boolean isLst(char c) {
+		return c == '[' || c == ']';
+	}
 	
 	/**
 	 * This method maps the input to a list of objects
@@ -179,65 +190,63 @@ public class Day13 extends RootDay {
 		return pairs;
 	}
 	
-	private int countChar(String text, char c) {
-		int count = 0;
-		for (char ci : text.toCharArray()) {
-			if (c == ci) {
-				count++;
-			}
-		}
-		return count;
-	}
-	
-	/**
-	 * @param expression
-	 * @return item that contains all the content
-	 */
-	private Item getItem(String expression) {		
-		//empty
-		if (expression.isBlank()) {
-			return null;
-		}
+	private Item getItem(String s) {
+		Item item = null;
+		int brackets = 0;
 		
-		//list
-		Pattern patternList = Pattern.compile("^(\\[)(.*)(\\])$");
-	    Matcher matchList = patternList.matcher(expression);
-		if (matchList.find()) {
-			String listContent = matchList.group(2);
+		char[] chars = s.toCharArray();
+		char c0 = chars[0];
+		
+		if (c0 == '[') {
+			item = new Listz();
+			brackets++;
+		} else if ((c0 + "").matches("[0-9]")) {
+			return new Intz(charToInt(c0));
+		} else {
+			throw new RuntimeException("Unknown type: '" + c0 + "'");
+		}
 
-			Listz list = new Listz();
-			int brackets = 0;
+		//must be a list
+		for (int j=1; j<chars.length; j++) {
+			char c = chars[j];
 			
-			String[] contents = listContent.split(",");
-			String contentStretch = "";
-			for (String content : contents) {
-				brackets += countChar(content, '[');
-				brackets -= countChar(content, ']');
-				
-				if (brackets == 0) {
-					contentStretch += content;
-					Item item = getItem(contentStretch);
-					if (item != null) {
-						list.add(item);						
-					}
-					contentStretch = "";
-				} else {
-					contentStretch += content + ",";
+			//contains list
+			if (c == '[') {
+				if (brackets == 1) {
+					Item subItem = getItem(s.substring(j, s.length()));
+					((Listz) item).add(subItem);					
 				}
+				brackets++;
+			} else if (c == ']') {
+				brackets--;
+				if (brackets == 0) {
+					return item;
+				}
+			//contains int
+			} else if ((c + "").matches("[0-9]")) {
+				if (brackets == 1) {
+					String intString = "";
+					for (int k=j; k<chars.length; k++) {
+						char kChar = chars[k];
+						if ((kChar+"").matches("[0-9]")) {
+							intString += kChar;
+						} else {
+							j = k;
+							break;
+						}
+					}
+					
+					Intz intz = new Intz(Integer.parseInt(intString));					
+					((Listz) item).add(intz);
+				}
+			} else if ((c + "").matches(",")) {
+				//ignore
+			} else {
+				throw new RuntimeException("Unknown char '" + c + "'");				
 			}
-			
-			return list;
 		}
 		
-		//int
-		Pattern patternInt = Pattern.compile("^[0-9]+$");
-	    Matcher matchInt = patternInt.matcher(expression);
-		if (matchInt.find()) {
-			int i = Integer.parseInt(expression);
-			return new Intz(i);
-		}
-		
-		throw new RuntimeException("Unknown expression: '" + expression + "'");
+		return item;
 	}
 	
 	private void print(ArrayList<Item> items) {

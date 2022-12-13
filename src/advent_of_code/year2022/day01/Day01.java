@@ -3,29 +3,26 @@ package advent_of_code.year2022.day01;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import advent_of_code.utils.Day;
 import advent_of_code.utils.Read;
+import advent_of_code.utils.RootDay;
 
-public class Day01 extends Day {
+public class Day01 extends RootDay {
+	public Day01() {
+		super(true, true, "74198", true, true, "209914");
+	}
+
 	@Override
 	public String run1() {
 		ArrayList<Integer> calories = getCalories(input().split("\n"));
-		return getMax(calories) + "";
+		return Collections.max(calories) + "";
 	}
 
 	@Override
 	public String run2() {
 		ArrayList<Integer> calories = getCalories(input().split("\n"));
-		return getTop3(calories) + "";
-	}
-
-	private static int getMax(ArrayList<Integer> calories) {
-		return Collections.max(calories);
-	}
-	
-	private static int getTop3(ArrayList<Integer> calories) {
 		Collections.sort(calories, Collections.reverseOrder());
-		return calories.get(0) + calories.get(1) + calories.get(2);
+		int sumTop3 = calories.get(0) + calories.get(1) + calories.get(2);
+		return sumTop3 + "";
 	}
 	
 	/**
@@ -45,11 +42,6 @@ public class Day01 extends Day {
 		}
 		calories.add(cal);
 		return calories;
-	}
-	
-	@Override
-	protected boolean test() {
-		return run1().equals("74198") && run2().equals("209914");
 	}
 	
 	private static String example() {

@@ -2,8 +2,13 @@ package advent_of_code.year2022.day02;
 
 import advent_of_code.utils.Day;
 import advent_of_code.utils.Read;
+import advent_of_code.utils.RootDay;
 
-public class Day02 extends Day {
+public class Day02 extends RootDay {
+	public Day02() {
+		super(true, true, "9177", true, true, "12111");
+	}
+	
 	@Override
 	public String run1() {
 		String[] input = input();
@@ -114,11 +119,6 @@ public class Day02 extends Day {
 		if (opp.equals("s") && you.equals("s")) return 3;
 		
 		throw new RuntimeException("Could not calculate outcome points");
-	}
-	
-	@Override
-	protected boolean test() {
-		return run1().equals("9177") && run2().equals("12111");
 	}
 	
 	private static String[] example() {
