@@ -6,6 +6,8 @@ public class Grid<T> {
 	private String divider = ",";
 	private String t = "t";
 	private String f = "f";
+	private int shiftX = 0;
+	private int shiftY = 0;
 	
 	@SuppressWarnings("unchecked")
 	public Grid(int width, int height, boolean verticalGoesUp) {
@@ -21,10 +23,19 @@ public class Grid<T> {
 	public Grid(String[] strings, boolean verticalGoesUp) {
 		constructor(strings, verticalGoesUp);
 	}
+	
+	public void shift(int shiftX, int shiftY) {
+		this.shiftX = shiftX;
+		this.shiftY = shiftY;
+	}
 
 	public static Grid<Integer> toIntGrid(Grid<String> grid) {
 		Grid<Integer> gridInt = new Grid<Integer>(grid.getWidth(), grid.getHeight(), grid.verticalGoesUp);
+		gridInt.setDivider(grid.getDivider());
 		
+		int shiftX = grid.getShiftX();
+		int shiftY = grid.getShiftY();
+		grid.shift(0, 0);
 		for (int x=0; x<grid.getWidth(); x++) {
 			for (int y=0; y<grid.getHeight(); y++) {
 				String value = grid.get(x, y);
@@ -33,18 +44,26 @@ public class Grid<T> {
 			}
 		}
 		
+		grid.shift(shiftX, shiftY);
+		gridInt.shift(shiftX, shiftY);
 		return gridInt;
 	}
 
 	public void set(T value) {
-		for (int row=0; row<grid.length; row++) {
-			for (int col=0; col<grid[0].length; col++) {
-				grid[row][col] = value;
+		for (int x=0; x<getWidth(); x++) {
+			for (int y=0; y<getHeight(); y++) {
+				internalSet(x, y, value);
 			}
 		}
 	}
-	
+
 	public void set(int x, int y, T value) {
+		x += shiftX;
+		y += shiftY;
+		internalSet(x, y, value);
+	}
+
+	private void internalSet(int x, int y, T value) {
 		if (verticalGoesUp) {
 			grid[(grid.length - 1) - y][x] = value;
 		} else {
@@ -53,6 +72,8 @@ public class Grid<T> {
 	}
 	
 	public T get(int x, int y) {
+		x += shiftX;
+		y += shiftY;
 		if (verticalGoesUp) {
 			return grid[(grid.length - 1) - y][x];
 		} else {
@@ -88,9 +109,8 @@ public class Grid<T> {
 	@Override
 	public String toString() {
 		String s = "";
-
-		for (int r=0; r<grid.length; r++) {
-			for (int c=0; c<grid[0].length; c++) {
+		for (int r=0; r<getHeight(); r++) {
+			for (int c=0; c<getWidth(); c++) {
 				T value = grid[r][c];
 				if (value instanceof Boolean) {
 					Boolean b = (Boolean) value;
@@ -123,5 +143,17 @@ public class Grid<T> {
 				}
 			}
 		}
+	}
+	
+	public int getShiftX() {
+		return shiftX;
+	}
+	
+	public int getShiftY() {
+		return shiftY;
+	}
+	
+	public String getDivider() {
+		return divider;
 	}
 }
