@@ -5,9 +5,9 @@ import advent_of_code.utils.Log;
 
 /**
  * Rock class
- * 	-every rock is a grid of 4x4
- *  -the type defines which cells are solid
- * 	-the position of a rock is the lower left corner
+ *	-every rock is a grid of 4x4
+ *	-the type defines which cells are solid
+ *	-the position of a rock is the lower left corner
  */
 public class Rock {
 	public static int NR_TYPES = 5;

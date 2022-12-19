@@ -30,9 +30,7 @@ public class Day18 extends RootDay {
 	}
 
 	/**
-	 * This method finds trapped air cubes and add them as regular cubes such that no air is trapped
-	 * 
-	 * Air cubes should not be able to escape to outside the boundaries
+	 * This method finds trapped air cubes and replaces them with regular cubes such that no trapped air exists
 	 */
 	private void addTrappedAirCubes(ArrayList<Cube> cubes) {
 		//Find coordinate boundaries
@@ -81,6 +79,8 @@ public class Day18 extends RootDay {
 	}
 	
 	/**
+	 * If a coordinate is an air cube, it should not be possible to find a path from the cube to the void.
+	 * 
 	 * @param cubes
 	 * @param visited
 	 * @param cubeStart

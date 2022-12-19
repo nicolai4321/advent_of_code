@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import advent_of_code.utils.BigInt;
+import advent_of_code.utils.Log;
 
 public class Board {
 	private static final int MAP_RANGE = 5;
@@ -43,6 +44,11 @@ public class Board {
 			}
 			simulateFall(addRock());			
 		}
+		
+		if (mRounds != 1) {
+			Log.warn("Warning! Could not analyze skip and mRounds was not utilized! Notice that mRounds should only be used, when the desired rounds cannot be stored in nrRounds alone");
+		}
+		
 		highestPointOutput = BigInt.get(highestPoint);
 	}
 	
@@ -89,10 +95,10 @@ public class Board {
 			} else if (repeatingJetround == null && 0 < repeatingJetRounds.size() && jetRound < repeatingJetRounds.get(repeatingJetRounds.size()-1)) {
 				//this is the first point where a repeating jet round has been identified
 				repeatingHeightStart = highestPoint;
-				repeatingJetround = jetRound;
 				repeatingRoundStart = round;
+				repeatingJetround = jetRound;
 			} else if (repeatingJetround == null) {
-				//adding jet rounds to a list of repeating jet rounds
+				//nothing is found, adding jet rounds to a list of repeating jet rounds
 				repeatingJetRounds.add(jetRound);
 			}
 		}
@@ -119,7 +125,7 @@ public class Board {
 	
 	/**
 	 * @param rock
-	 * @return true if the rock is colliding the bottom or other rocks (EXCLUDRING collision with the wall)
+	 * @return true if the rock is colliding with the bottom of the board or with another rocks. This does NOT include collision with the wall
 	 */
 	private boolean rockIsColliding(Rock rock) {
 		for (Rock otherRock : getRocks(rock)) {
@@ -150,7 +156,7 @@ public class Board {
 	}
 	
 	/**
-	 * All rocks are stored together in groups of similar y-coordinates. This method returns a subset of rocks with y-coordinates in range of rock.
+	 * All rocks are stored together in groups of similar y-coordinates. This method returns a subset of rocks with y-coordinates in range of the rock.
 	 * @param rock
 	 * @return relevant rocks on the board
 	 */
