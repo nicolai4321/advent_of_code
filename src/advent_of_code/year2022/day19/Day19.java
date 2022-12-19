@@ -1,144 +1,225 @@
 package advent_of_code.year2022.day19;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import advent_of_code.utils.Log;
 import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day19 extends RootDay {
 	public Day19() {
-		super(true, true, null, false, true, null);
+		super(true, true, "1199", true, true, "3510");
 	}
 
 	@Override
 	public String run1() {
 		String[] input = input();
-		ArrayList<Blueprint> blueprints = generateBlueprints(input);		
-		return getQualityLevelSum(blueprints, 24) + "";
+		ArrayList<Blueprint> blueprints = generateBlueprints(input);
+		ArrayList<int[]> geodesForBlueprints = getGeodesForBlueprints(blueprints, 24);
+		return getQualityLevelSum(geodesForBlueprints) + "";
 	}
 
 	@Override
 	public String run2() {
 		String[] input = input();
+		ArrayList<Blueprint> blueprints = generateBlueprints(input);		
+		ArrayList<Blueprint> threeBlueprints = new ArrayList<Blueprint>();
+		for (int i=0; i<3; i++) {
+			threeBlueprints.add(blueprints.get(i));
+		}
+		int sum = 1;
+		ArrayList<int[]> geodesForBlueprints = getGeodesForBlueprints(threeBlueprints, 32);
+		for (int[] pair : geodesForBlueprints) {
+			sum = sum * pair[1];
+		}
 		
-		return null;
+		return sum + "";
 	}
 
-	private int beginCollecting(Blueprint bp, int oreRobots, int clayRobots, int obsidianRobots, int geodeRobots, int ore, int clay, int obsidian, int geodes, int minutes) {
+	/**
+	 * This method returns the maximum collection of geode
+	 * 
+	 * For performance optimization:
+	 * 	-Always buy geode robot when possible
+	 * 	-Never produce anything if there is only 1 minute left, since the robot will not be ready to produce anything
+	 * 	-Never produce so many robots of one type that the factory theoretical cannot spend all the resources
+	 * 	-If nothing was produced but robot A could be produced. Don't produce robot A until another robot has been produced. If robot A was needed, it was produced as soon as possible
+	 * 	-Never skip producing anything if everything can be produced
+	 * 
+	 * @param bp
+	 * @param oreRobots
+	 * @param clayRobots
+	 * @param obsidianRobots
+	 * @param geodeRobots
+	 * @param ore
+	 * @param clay
+	 * @param obsidian
+	 * @param geodes
+	 * @param minutes
+	 * @param skippedOreRobot
+	 * @param skippedClayRobot
+	 * @param skippedObsidianRobot
+	 * @return maximum collection of geode
+	 */
+	private int beginCollecting(Blueprint bp,
+								int oreRobots, 
+								int clayRobots, 
+								int obsidianRobots, 
+								int geodeRobots, 
+								int ore, 
+								int clay, 
+								int obsidian, 
+								int geodes, 
+								int minutes,
+								boolean skippedOreRobot,
+								boolean skippedClayRobot,
+								boolean skippedObsidianRobot) {
 		if (minutes <= 0) {
 			return geodes;
 		}
-				
+		
 		int maxGeodes = 0;
+		
 		//try buying ore robot
-		if (bp.getOresForOreRobot() <= ore) {
+		boolean canBuyOreRobot = bp.getOresForOreRobot() <= ore;
+		boolean canBuyGeodeRobot = bp.getOresForGeodeRobot() <= ore && bp.getObsidianForGeodeRobot() <= obsidian;
+		int maxOreProd = Math.max(Math.max(bp.getOresForOreRobot(), bp.getOresForClayRobot()), Math.max(bp.getOresForObsidianRobot(), bp.getOresForGeodeRobot()));
+		if (canBuyOreRobot && 1 < minutes && !canBuyGeodeRobot && oreRobots<maxOreProd && !skippedOreRobot) {
 			maxGeodes = Math.max(maxGeodes, 
-					beginCollecting(
-						bp, 
-						oreRobots + 1,
-						clayRobots,
-						obsidianRobots,
-						geodeRobots,
-						ore + oreRobots - bp.getOresForOreRobot(), 
-						clay + clayRobots, 
-						obsidian + obsidianRobots, 
-						geodes + geodeRobots, 
-						minutes - 1));
+					beginCollecting(bp,
+									oreRobots + 1,
+									clayRobots,
+									obsidianRobots,
+									geodeRobots,
+									ore + oreRobots - bp.getOresForOreRobot(), 
+									clay + clayRobots, 
+									obsidian + obsidianRobots, 
+									geodes + geodeRobots, 
+									minutes - 1,
+									false,
+									false,
+									false));
 		}
 
 		//try buying clay robot
-		if (bp.getOresForClayRobot() <= ore) {
+		boolean canBuyClayRobot = bp.getOresForClayRobot() <= ore;
+		if (canBuyClayRobot && 1 < minutes && !canBuyGeodeRobot && clayRobots<bp.getClayForObsidianRobot() && !skippedClayRobot) {
 			maxGeodes = Math.max(maxGeodes, 
-					beginCollecting(
-						bp, 
-						oreRobots,
-						clayRobots + 1,
-						obsidianRobots,
-						geodeRobots,
-						ore + oreRobots - bp.getOresForClayRobot(), 
-						clay + clayRobots, 
-						obsidian + obsidianRobots, 
-						geodes + geodeRobots, 
-						minutes - 1));
+					beginCollecting(bp,
+									oreRobots,
+									clayRobots + 1,
+									obsidianRobots,
+									geodeRobots,
+									ore + oreRobots - bp.getOresForClayRobot(), 
+									clay + clayRobots, 
+									obsidian + obsidianRobots, 
+									geodes + geodeRobots, 
+									minutes - 1,
+									false,
+									false,
+									false));
 		}
 		
 		//try buying obsidian robot
-		if (bp.getOresForObsidianRobot() <= ore && bp.getClayForObsidianRobot() <= clay) {
+		boolean canBuyObsidianRobot = bp.getOresForObsidianRobot() <= ore && bp.getClayForObsidianRobot() <= clay;
+		if (canBuyObsidianRobot && 1 < minutes && !canBuyGeodeRobot && obsidianRobots<bp.getObsidianForGeodeRobot() && !skippedObsidianRobot) {
 			maxGeodes = Math.max(maxGeodes, 
-					beginCollecting(
-						bp, 
-						oreRobots,
-						clayRobots,
-						obsidianRobots + 1,
-						geodeRobots,
-						ore + oreRobots - bp.getOresForObsidianRobot(), 
-						clay + clayRobots - bp.getClayForObsidianRobot(), 
-						obsidian + obsidianRobots, 
-						geodes + geodeRobots, 
-						minutes - 1));
+					beginCollecting(bp,
+									oreRobots,
+									clayRobots,
+									obsidianRobots + 1,
+									geodeRobots,
+									ore + oreRobots - bp.getOresForObsidianRobot(), 
+									clay + clayRobots - bp.getClayForObsidianRobot(), 
+									obsidian + obsidianRobots, 
+									geodes + geodeRobots, 
+									minutes - 1,
+									false,
+									false,
+									false));
 		}
 		
 		//try buying geode robot
-		if (bp.getOresForGeodeRobot() <= ore && bp.getObsidianForGeodeRobot() <= obsidian) {
+		if (canBuyGeodeRobot && 1 < minutes) {
 			maxGeodes = Math.max(maxGeodes, 
-					beginCollecting(
-						bp, 
-						oreRobots,
-						clayRobots,
-						obsidianRobots,
-						geodeRobots + 1,
-						ore + oreRobots - bp.getOresForGeodeRobot(), 
-						clay + clayRobots, 
-						obsidian + obsidianRobots - bp.getObsidianForGeodeRobot(), 
-						geodes + geodeRobots, 
-						minutes - 1));
+					beginCollecting(bp,
+									oreRobots,
+									clayRobots,
+									obsidianRobots,
+									geodeRobots + 1,
+									ore + oreRobots - bp.getOresForGeodeRobot(), 
+									clay + clayRobots, 
+									obsidian + obsidianRobots - bp.getObsidianForGeodeRobot(), 
+									geodes + geodeRobots, 
+									minutes - 1,
+									false,
+									false,
+									false));
 		}  
 
-		//buying nothing
-		boolean canBuyOreRobot = bp.getOresForOreRobot() <= ore;
-		boolean canBuyClayRobot = bp.getOresForClayRobot() <= ore;
-		boolean canBuyObsidianRobot = bp.getOresForObsidianRobot() <= ore && bp.getClayForObsidianRobot() <= clay;
-		boolean canBuyGeodeRobot = bp.getOresForGeodeRobot() <= ore && bp.getObsidianForGeodeRobot() <= obsidian;
+		//producing nothing
 		if (!(canBuyOreRobot && canBuyClayRobot && canBuyObsidianRobot && canBuyGeodeRobot)) {
 			maxGeodes = Math.max(maxGeodes, 
-					beginCollecting(
-						bp, 
-						oreRobots,
-						clayRobots,
-						obsidianRobots,
-						geodeRobots,
-						ore + oreRobots, 
-						clay + clayRobots, 
-						obsidian + obsidianRobots, 
-						geodes + geodeRobots, 
-						minutes - 1));
+					beginCollecting(bp,
+									oreRobots,
+									clayRobots,
+									obsidianRobots,
+									geodeRobots,
+									ore + oreRobots, 
+									clay + clayRobots, 
+									obsidian + obsidianRobots, 
+									geodes + geodeRobots, 
+									minutes - 1,
+									canBuyOreRobot,
+									canBuyClayRobot,
+									canBuyObsidianRobot));
 		}
 				
 		return maxGeodes;
 	}
 	
-	private int getQualityLevelSum(ArrayList<Blueprint> blueprints, int minutes) {
-		int qualityLevelSum = 0;
-		for (Blueprint blueprint : blueprints) {			
-			HashMap<Robot, Integer> robots = new HashMap<Robot, Integer>();
-			robots.put(Robot.ORE_ROBOT, 1);
-			robots.put(Robot.CLAY_ROBO, 0);
-			robots.put(Robot.GEODE_ROBOT, 0);
-			robots.put(Robot.OBSIDIAN_ROBOT, 0);
-
-			int geodes = beginCollecting(blueprint, 1, 0, 0, 0, 0, 0, 0, 0, minutes);
-			Log.show(blueprint.getId() + " - geodes: " + geodes);
-			qualityLevelSum += qualityLevel(blueprint.getId(), geodes);
+	/**
+	 * 
+	 * @param blueprints
+	 * @param minutes
+	 * @return geodesForBlueprints
+	 */
+	private ArrayList<int[]> getGeodesForBlueprints(ArrayList<Blueprint> blueprints, int minutes) {
+		ArrayList<int[]> geodesForBlueprints = new ArrayList<int[]>();
+		for (Blueprint blueprint : blueprints) {
+			int geodes = beginCollecting(blueprint,
+										 1, 
+										 0, 
+										 0, 
+										 0, 
+										 0, 
+										 0, 
+										 0, 
+										 0, 
+										 minutes,
+										 false,
+										 false,
+										 false);
+			geodesForBlueprints.add(new int[] { blueprint.getId(), geodes });
 		}
-		return qualityLevelSum;
+		return geodesForBlueprints;
 	}
 	
-	private int qualityLevel(int blueprintId, int largestNumberOfGeodes) {
-		return blueprintId * largestNumberOfGeodes;
+	/**
+	 * @param geodesForBlueprints
+	 * @return qualityLevelSum
+	 */
+	private int getQualityLevelSum(ArrayList<int[]> geodesForBlueprints) {
+		int sum = 0;
+		for (int[] pair : geodesForBlueprints) {
+			sum += pair[0] * pair[1];
+		}
+		return sum;
 	}
 	
+	/**
+	 * @param input
+	 * @return list of blueprints
+	 */
 	private ArrayList<Blueprint> generateBlueprints(String[] input) {
 		ArrayList<Blueprint> blueprints = new ArrayList<Blueprint>();
 		for (String line : input) {
