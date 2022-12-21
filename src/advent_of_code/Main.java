@@ -25,43 +25,43 @@ import advent_of_code.year2022.day20.Day20;
 import advent_of_code.year2022.day21.Day21;
 
 public class Main {
-	public static void main(String[] args) {
-		RootDay day = new Day20();
-		//day.run();
-		runAllDays(true);
-	}
-	
-	private static void runAllDays(boolean onlyOptimized) {
-		Log.show("Run all days");
-		Log.disable();
-		new Day01().run();
-		new Day02().run();
-		new Day03().run();
-		new Day04().run();
-		new Day05().run();
-		new Day06().run();
-		new Day07().run();
-		new Day08().run();
-		new Day09().run();
-		new Day10().run();
-		new Day11().run();
-		if (!onlyOptimized) {
-			new Day12().run(); //TODO optimize
-		}
-		new Day13().run();
-		new Day14().run();
-		if (!onlyOptimized) {
-			new Day15().run(); //TODO optimize
-			new Day16().run(); //TODO optimize
-		}
-		new Day17().run();
-		if (!onlyOptimized) {
-			new Day18().run(); //TODO optimize
-		}
-		new Day19().run();
-		new Day20().run();
-		new Day21().run();
-		Log.enable();
-		Log.show("Done");
-	}
+    public static void main(String[] args) {
+        RootDay day = new Day20();
+        //day.run();
+        runAllDays(true);
+    }
+    
+    private static void runAllDays(boolean onlyOptimized) {
+        Log.show("Run all days");
+        Log.disable();
+        new Day01().run();
+        new Day02().run();
+        new Day03().run();
+        new Day04().run();
+        new Day05().run();
+        new Day06().run();
+        new Day07().run();
+        new Day08().run();
+        new Day09().run();
+        new Day10().run();
+        new Day11().run();
+        if (!onlyOptimized) {
+            new Day12().run(); //TODO optimize
+        }
+        new Day13().run();
+        new Day14().run();
+        if (!onlyOptimized) {
+            new Day15().run(); //TODO optimize
+            new Day16().run(); //TODO optimize
+        }
+        new Day17().run();
+        if (!onlyOptimized) {
+            new Day18().run(); //TODO optimize
+        }
+        new Day19().run();
+        new Day20().run();
+        new Day21().run();
+        Log.enable();
+        Log.show("Done");
+    }
 }
