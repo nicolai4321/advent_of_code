@@ -1,10 +1,14 @@
 package advent_of_code.year2022.day08;
 
-import advent_of_code.utils.Day;
 import advent_of_code.utils.Lists;
 import advent_of_code.utils.Read;
+import advent_of_code.utils.RootDay;
 
-public class Day08 extends Day {
+public class Day08 extends RootDay {
+	public Day08() {
+		super(true, true, "1827", true, true, "335580");
+	}
+
 	@Override
 	public String run1() {
 		String input = input();
@@ -179,11 +183,6 @@ public class Day08 extends Day {
 		}
 		
 		return true;
-	}
-	
-	@Override
-	protected boolean test() {
-		return run1().equals("1827") && run2().equals("335580");
 	}
 	
 	private static String example() {

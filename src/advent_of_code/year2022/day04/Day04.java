@@ -1,9 +1,13 @@
 package advent_of_code.year2022.day04;
 
-import advent_of_code.utils.Day;
 import advent_of_code.utils.Read;
+import advent_of_code.utils.RootDay;
 
-public class Day04 extends Day {
+public class Day04 extends RootDay {
+	public Day04() {
+		super(true, true, "550", true, true, "931");
+	}
+
 	@Override
 	public String run1() {
 		String[] input = input();
@@ -69,20 +73,6 @@ public class Day04 extends Day {
 	private int[] getRange(String rangeString) {
 		String[] split = rangeString.split("-");
 		return new int[] { Integer.parseInt(split[0]), Integer.parseInt(split[1]) };
-	}
-	
-	
-	@Override
-	protected boolean test() {
-		if (run1() == "550") {
-			return false;
-		}
-		
-		if (run2() == "931") {
-			return false;
-		}
-		
-		return true;
 	}
 	
 	private static String[] example() {

@@ -64,6 +64,19 @@ public class Log {
 	}
 	
 	/**
+	 * Show content of array list
+	 * @param <T>
+	 * @param lst
+	 */
+	public static <T> void showln(ArrayList<T> lst) {
+		String s = "[";
+		for (T type : lst) {
+			s += type + ",\n";
+		}
+		s = s.replaceAll(",$", "]");
+		println(s);
+	}
+	/**
 	 * Show content of an array of arrays
 	 * @param <T>
 	 * @param typesOfTypes

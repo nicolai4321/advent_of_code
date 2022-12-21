@@ -2,11 +2,14 @@ package advent_of_code.year2022.day03;
 
 import java.util.ArrayList;
 
-import advent_of_code.utils.Day;
-import advent_of_code.utils.Log;
 import advent_of_code.utils.Read;
+import advent_of_code.utils.RootDay;
 
-public class Day03 extends Day {
+public class Day03 extends RootDay {
+	public Day03() {
+		super(true, true, "7716", true, true, "2973");
+	}
+
 	@Override
 	public String run1() {
 		String[] rucksacks = input();
@@ -103,11 +106,6 @@ public class Day03 extends Day {
 		}
 		
 		throw new RuntimeException("No common item in rucksack");
-	}
-
-	@Override
-	protected boolean test() {
-		return run1().equals("7716") && run2().equals("2973");
 	}
 
 	private static String[] example() {
