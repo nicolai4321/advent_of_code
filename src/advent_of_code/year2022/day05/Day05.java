@@ -2,11 +2,15 @@ package advent_of_code.year2022.day05;
 
 import java.util.ArrayList;
 
-import advent_of_code.utils.Day;
 import advent_of_code.utils.Lists;
 import advent_of_code.utils.Read;
+import advent_of_code.utils.RootDay;
 
-public class Day05 extends Day {
+public class Day05 extends RootDay {
+	public Day05() {
+		super(true, true, "QMBMJDFTD", true, true, "NBTVTJNFJ");
+	}
+
 	@Override
 	public String run1() {
 		String input = input();
@@ -123,17 +127,6 @@ public class Day05 extends Day {
 		}
 		col.remove(index);
 		return value;
-	}
-	
-	@Override
-	protected boolean test() {
-		if (!run1().equals("QMBMJDFTD")) {
-			return false;
-		}
-		if (!run2().equals("NBTVTJNFJ")) {
-			return false;
-		}
-		return true;
 	}
 	
 	private static String example() {

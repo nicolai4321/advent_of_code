@@ -15,7 +15,6 @@ public class Day11 extends RootDay {
 	@Override
 	public String run1() {
 		ArrayList<Monkey> monkeys = generateMonkeys(false);
-		Log.show(monkeys);
 		simulateRounds(20, monkeys, 3);
 		return getLevelOfMonkeyBusiness(monkeys) + "";
 	}
@@ -23,7 +22,6 @@ public class Day11 extends RootDay {
 	@Override
 	public String run2() {
 		ArrayList<Monkey> monkeys = generateMonkeys(false);
-		Log.show(monkeys);
 		simulateRounds(10000, monkeys, null);
 		return getLevelOfMonkeyBusiness(monkeys) + "";
 	}

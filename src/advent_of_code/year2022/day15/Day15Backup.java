@@ -8,8 +8,8 @@ import advent_of_code.utils.Log;
 import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
-public class Day15 extends RootDay {
-	public Day15() {
+public class Day15Backup extends RootDay {
+	public Day15Backup() {
 		super(true, true, "5688618", true, true, "12625383204261");
 	}
 
@@ -17,7 +17,7 @@ public class Day15 extends RootDay {
 	public String run1() {
 		String[] input = input();
 		ArrayList<int[]> machines = generateMachines(input);
-		ArrayList<ArrayList<int[]>> distanceInfo = getDistanceInfo(machines);
+		ArrayList<ArrayList<int[]>> distanceInfo = getDistanceInfo(machines);		
 		return excludeNr(distanceInfo, 2000000) + "";
 	}
 
@@ -28,27 +28,16 @@ public class Day15 extends RootDay {
 		
 		ArrayList<int[]> machines = generateMachines(input);
 		ArrayList<ArrayList<int[]>> distanceInfo = getDistanceInfo(machines);		
-		ArrayList<int[]> solutionLines = getSolutionLines(distanceInfo);
 		int[] coor = part2Skip(distanceInfo, max);
 		Log.show(coor[0] + "," + coor[1]);
 		return getTuning(coor[0], coor[1]);
 	}
 	
-	private ArrayList<int[]> getSolutionLines(ArrayList<ArrayList<int[]>> distanceInfo) {
-		for (ArrayList<int[]> pair : distanceInfo) {
-			int[] position = pair.get(0);
-			int[] distances = pair.get(0);
-			
-			//TODO
-			
-		}
-		return null;
-	}
-
 	//TODO optimize or find better method
 	private int[] part2Skip(ArrayList<ArrayList<int[]>> distanceInfo, int max) {
+		//TODO hardcoded:
 		//for (int yLine=0; yLine<max; yLine++) {
-		for (int yLine=3204000; yLine<max; yLine++) { //TODO hardcoded:
+		for (int yLine=3204000; yLine<max; yLine++) {
 			if (yLine % 100 == 0) {
 				Log.show("y: " + yLine);
 			}
