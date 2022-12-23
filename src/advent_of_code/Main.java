@@ -1,5 +1,7 @@
 package advent_of_code;
 
+import java.util.ArrayList;
+
 import advent_of_code.utils.Log;
 import advent_of_code.utils.RootDay;
 import advent_of_code.year2022.day01.Day01;
@@ -23,45 +25,54 @@ import advent_of_code.year2022.day18.Day18;
 import advent_of_code.year2022.day19.Day19;
 import advent_of_code.year2022.day20.Day20;
 import advent_of_code.year2022.day21.Day21;
+import advent_of_code.year2022.day22.Day22;
+import advent_of_code.year2022.day23.Day23;
 
 public class Main {
     public static void main(String[] args) {
-        RootDay day = new Day20();
-        //day.run();
-        runAllDays(true);
+        ArrayList<RootDay> days2022 = getDaysFor2022();
+        //runAll(days2022);
+        
+        new Day22().run();
     }
     
-    private static void runAllDays(boolean onlyOptimized) {
-        Log.show("Run all days");
+    private static void runAll(ArrayList<RootDay> days) {
+        Log.show("Run every day");
         Log.disable();
-        new Day01().run();
-        new Day02().run();
-        new Day03().run();
-        new Day04().run();
-        new Day05().run();
-        new Day06().run();
-        new Day07().run();
-        new Day08().run();
-        new Day09().run();
-        new Day10().run();
-        new Day11().run();
-        if (!onlyOptimized) {
-            new Day12().run(); //TODO optimize
+        
+        for (RootDay day : days) {
+            day.run();
         }
-        new Day13().run();
-        new Day14().run();
-        if (!onlyOptimized) {
-            new Day15().run(); //TODO optimize
-            new Day16().run(); //TODO optimize
-        }
-        new Day17().run();
-        if (!onlyOptimized) {
-            new Day18().run(); //TODO optimize
-        }
-        new Day19().run();
-        new Day20().run();
-        new Day21().run();
+        
         Log.enable();
         Log.show("Done");
+    }
+    
+    private static ArrayList<RootDay> getDaysFor2022() {
+        ArrayList<RootDay> days2022 = new ArrayList<RootDay>();
+        days2022.add(new Day01());
+        days2022.add(new Day02());
+        days2022.add(new Day03());
+        days2022.add(new Day04());
+        days2022.add(new Day05());
+        days2022.add(new Day06());
+        days2022.add(new Day07());
+        days2022.add(new Day08());
+        days2022.add(new Day09());
+        days2022.add(new Day10());
+        days2022.add(new Day11());
+        //days2022.add(new Day12());  //TODO optimize
+        days2022.add(new Day13());
+        days2022.add(new Day14());
+        //days2022.add(new Day15());  //TODO optimize
+        //days2022.add(new Day16());  //TODO optimize
+        days2022.add(new Day17());
+        //days2022.add(new Day18());  //TODO optimize
+        days2022.add(new Day19());
+        days2022.add(new Day20());
+        days2022.add(new Day21());
+        days2022.add(new Day22());
+        days2022.add(new Day23());
+        return days2022;
     }
 }

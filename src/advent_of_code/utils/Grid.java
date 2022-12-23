@@ -156,4 +156,48 @@ public class Grid<T> {
 	public String getDivider() {
 		return divider;
 	}
+
+    public void print(int x, int y, String string) {
+        String s = "";
+        for (int r=0; r<getHeight(); r++) {
+            for (int c=0; c<getWidth(); c++) {
+                T value = grid[r][c];
+                if (value instanceof Boolean) {
+                    Boolean b = (Boolean) value;
+                    s += ((b == null) ? "" : ((b) ? t : f)) + divider; 
+                } else {
+                    if (r == y && c == x) {
+                        s += string;
+                    } else {
+                        s += value + divider;                        
+                    }
+                }
+            }
+            s = s.replaceAll(divider + "$", "") + "\n";
+        }
+        Log.show(s);
+    }
+
+    public void print(int x0, int y0, String s0, int x1, int y1, String s1) {
+        String s = "";
+        for (int r=0; r<getHeight(); r++) {
+            for (int c=0; c<getWidth(); c++) {
+                T value = grid[r][c];
+                if (value instanceof Boolean) {
+                    Boolean b = (Boolean) value;
+                    s += ((b == null) ? "" : ((b) ? t : f)) + divider; 
+                } else {
+                    if (r == y0 && c == x0) {
+                        s += s0;
+                    } else if (r == y1 && c == x1) {
+                        s += s1;
+                    } else {
+                        s += value + divider;                        
+                    }
+                }
+            }
+            s = s.replaceAll(divider + "$", "") + "\n";
+        }
+        Log.show(s);
+    }
 }
