@@ -1,25 +1,24 @@
 package advent_of_code.year2022.day08;
 
 import advent_of_code.utils.Lists;
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day08 extends RootDay {
     public Day08() {
-        super(true, true, "1827", true, true, "335580");
+        super(2022, 8, "1827", "335580");
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
 
     @Override
-    public String run1() {
-        String input = input();
+    public String run1(String input) {
         int[][] trees = Lists.getStaticToIntss(input, true);        
         boolean[][] visibleTrees = getVisibleTrees(trees);
         return sumVisibleTrees(visibleTrees) + "";
     }
 
     @Override
-    public String run2() {
-        String input = input();
+    public String run2(String input) {
         int[][] trees = Lists.getStaticToIntss(input, true);        
         return getBestView(trees) + "";
     }
@@ -183,13 +182,5 @@ public class Day08 extends RootDay {
         }
         
         return true;
-    }
-    
-    private static String example() {
-        return Read.getString(2022, 8, "example01.txt"); 
-    }
-    
-    private static String input() {
-        return Read.getString(2022, 8, "input01.txt"); 
     }
 }

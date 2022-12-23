@@ -2,17 +2,18 @@ package advent_of_code.year2022.day03;
 
 import java.util.ArrayList;
 
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day03 extends RootDay {
     public Day03() {
-        super(true, true, "7716", true, true, "2973");
+        super(2022, 3, "7716", "2973");
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
 
     @Override
-    public String run1() {
-        String[] rucksacks = input();
+    public String run1(String input) {
+        String[] rucksacks = input.split("\n");
         
         int points = 0;
         for(String rucksack : rucksacks) {
@@ -24,8 +25,8 @@ public class Day03 extends RootDay {
     }
     
     @Override
-    public String run2() {
-        String[] rucksacks = input();
+    public String run2(String input) {
+        String[] rucksacks = input.split("\n");
         
         ArrayList<ArrayList<String>> groups = new ArrayList<ArrayList<String>>();
         
@@ -106,13 +107,5 @@ public class Day03 extends RootDay {
         }
         
         throw new RuntimeException("No common item in rucksack");
-    }
-
-    private static String[] example() {
-        return Read.getStrings(2022, 3, "example01.txt"); 
-    }
-    
-    private static String[] input() {
-        return Read.getStrings(2022, 3, "input01.txt"); 
     }
 }

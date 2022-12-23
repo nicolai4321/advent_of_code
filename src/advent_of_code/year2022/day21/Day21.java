@@ -2,20 +2,20 @@ package advent_of_code.year2022.day21;
 
 import java.util.ArrayList;
 
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day21 extends RootDay {
     public Day21() {
-        super(true, true, "63119856257960", true, true, "3006709232464");
+        super(2022, 21, "63119856257960", "3006709232464");
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
 
     /**
      * Find the value of the variable root
      */
     @Override
-    public String run1() {
-        String[] input = input();
+    public String run1(String input) {
         ArrayList<Var> variables = mapToVariables(input);
         linkVariables(variables);
         Var root = getVar(variables, "root");
@@ -26,8 +26,7 @@ public class Day21 extends RootDay {
      * Find the value of the variable humn such that two variables in the variable root matches
      */
     @Override
-    public String run2() {
-        String[] input = input();
+    public String run2(String input) {
         ArrayList<Var> variables = mapToVariables(input);
         linkVariables(variables);
         Var root = getVar(variables, "root");
@@ -62,9 +61,9 @@ public class Day21 extends RootDay {
      * @param input
      * @return a list of variables
      */
-    private ArrayList<Var> mapToVariables(String[] input) {
+    private ArrayList<Var> mapToVariables(String input) {
         ArrayList<Var> variables = new ArrayList<Var>();
-        for (String line : input) {
+        for (String line : input.split("\n")) {
             String name = line.replaceAll(":.*$", "");
             String value = line.split(": ")[1];
                         
@@ -82,13 +81,5 @@ public class Day21 extends RootDay {
             }
         }
         return variables;
-    }
-
-    private static String[] example() {
-        return Read.getStrings(2022, 21, "example01.txt"); 
-    }
-    
-    private static String[] input() {
-        return Read.getStrings(2022, 21, "input01.txt"); 
     }
 }

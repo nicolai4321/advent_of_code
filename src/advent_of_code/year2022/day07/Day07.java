@@ -1,23 +1,24 @@
 package advent_of_code.year2022.day07;
 
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day07 extends RootDay {
     public Day07() {
-        super(true, true, "2031851", true, true, "2568781");
+        super(2022, 7, "2031851", "2568781");
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
 
     @Override
-    public String run1() {
-        String[] commands = input();
+    public String run1(String input) {
+        String[] commands = input.split("\n");
         Dir directory = generateDirectory(commands);    
         return directory.sum1() + "";
     }
 
     @Override
-    public String run2() {
-        String[] commands = input();
+    public String run2(String input) {
+        String[] commands = input.split("\n");
         Dir directory = generateDirectory(commands);
         
         int totalSize = directory.getSize();
@@ -77,13 +78,5 @@ public class Day07 extends RootDay {
         }
         
         return rootDirectory;
-    }
-    
-    private static String[] example() {
-        return Read.getStrings(2022, 7, "example01.txt"); 
-    }
-    
-    private static String[] input() {
-        return Read.getStrings(2022, 7, "input01.txt"); 
     }
 }

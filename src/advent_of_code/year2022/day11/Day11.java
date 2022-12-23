@@ -3,25 +3,25 @@ package advent_of_code.year2022.day11;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import advent_of_code.utils.Log;
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day11 extends RootDay {
     public Day11() {
-        super(true, true, "78678", true, true, "15333249714");
+        super(2022, 11, "78678", "15333249714");
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
 
     @Override
-    public String run1() {
-        ArrayList<Monkey> monkeys = generateMonkeys(false);
+    public String run1(String input) {
+        ArrayList<Monkey> monkeys = generateMonkeys(false, input);
         simulateRounds(20, monkeys, 3);
         return getLevelOfMonkeyBusiness(monkeys) + "";
     }
     
     @Override
-    public String run2() {
-        ArrayList<Monkey> monkeys = generateMonkeys(false);
+    public String run2(String input) {
+        ArrayList<Monkey> monkeys = generateMonkeys(false, input);
         simulateRounds(10000, monkeys, null);
         return getLevelOfMonkeyBusiness(monkeys) + "";
     }
@@ -66,14 +66,7 @@ public class Day11 extends RootDay {
      * @param useExample
      * @return monkeys
      */
-    private ArrayList<Monkey> generateMonkeys(boolean useExample) {
-        String input;
-        if (useExample) {
-            input = example();
-        } else {
-            input = input();
-        }
-        
+    private ArrayList<Monkey> generateMonkeys(boolean useExample, String input) {        
         input += "\n ";
         ArrayList<Monkey> monkeys = new ArrayList<Monkey>();
         
@@ -116,13 +109,5 @@ public class Day11 extends RootDay {
         }
         
         return monkeys;
-    }
-    
-    private static String example() {
-        return Read.getString(2022, 11, "example01.txt"); 
-    }
-    
-    private static String input() {
-        return Read.getString(2022, 11, "input01.txt"); 
     }
 }

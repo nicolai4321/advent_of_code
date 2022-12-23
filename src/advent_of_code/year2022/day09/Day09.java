@@ -1,26 +1,24 @@
 package advent_of_code.year2022.day09;
 
 import advent_of_code.utils.Grid;
-import advent_of_code.utils.Log;
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day09 extends RootDay {
     public Day09() {
-        super(true, true, "5710", true, true, "2259");
+        super(2022, 9, "5710", "2259");
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
 
     @Override
-    public String run1() {
-        String[] input = input();
+    public String run1(String input) {
         String[][] commands = getCommands(input);
         Grid<Boolean> visitingGrid = simulateGrid(commands, 2, 500, null);
         return countUniqueVisits(visitingGrid) + "";
     }
 
     @Override
-    public String run2() {
-        String[] input = input();
+    public String run2(String input) {
         String[][] commands = getCommands(input);
         Grid<Boolean> visitingGrid = simulateGrid(commands, 10, 500, null);        
         return countUniqueVisits(visitingGrid) + "";
@@ -172,11 +170,11 @@ public class Day09 extends RootDay {
      * @param input
      * @return pairs of commands and amounts
      */
-    public String[][] getCommands(String[] inputs) {
+    public String[][] getCommands(String input) {
+        String[] inputs = input.split("\n");
         String[][] commands = new String[inputs.length][2];
         for (int i=0; i<inputs.length; i++) {
-            String input = inputs[i];
-            String[] command = input.split(" ");
+            String[] command = inputs[i].split(" ");
             commands[i][0] = command[0];
             commands[i][1] = command[1];
         }
@@ -200,17 +198,5 @@ public class Day09 extends RootDay {
             grid.set(knot.getX(), knot.getY(), i + "");
         }
         grid.print();
-    }
-    
-    private static String[] example() {
-        return Read.getStrings(2022, 9, "example01.txt"); 
-    }
-    
-    private static String[] example2() {
-        return Read.getStrings(2022, 9, "example02.txt"); 
-    }
-    
-    private static String[] input() {
-        return Read.getStrings(2022, 9, "input01.txt"); 
     }
 }

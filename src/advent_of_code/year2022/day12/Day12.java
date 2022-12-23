@@ -1,26 +1,25 @@
 package advent_of_code.year2022.day12;
 
 import advent_of_code.utils.Grid;
-import advent_of_code.utils.Log;
 import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day12 extends RootDay {
     public Day12() {
-        super(true, true, "490", true, true, "488");
+        super(2022, 12, "490", "488");
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
 
     @Override
-    public String run1() {
-        String[] input = input();
+    public String run1(String input) {
         Grid<Integer> heightMap = getHeightMap(input);
         Grid<String> directionMap = getDirectionMap(heightMap);
         return calculateSteps(directionMap) + "";
     }
     
     @Override
-    public String run2() {
-        String[] input = input();
+    public String run2(String input) {
         Grid<Integer> heightMap = getHeightMap(input);
         Grid<String> directionMap = getDirectionMap2(heightMap);
         return calculateSteps(directionMap) + "";
@@ -220,8 +219,8 @@ public class Day12 extends RootDay {
      * @param input
      * @return heightMap
      */
-    private Grid<Integer> getHeightMap(String[] input) {
-        Grid<String> grid = new Grid<String>(input, true);
+    private Grid<Integer> getHeightMap(String input) {
+        Grid<String> grid = new Grid<String>(input.split("\n"), true);
         for (int x=0; x<grid.getWidth(); x++) {
             for (int y=0; y<grid.getHeight(); y++) {
                 char c = grid.get(x, y).charAt(0);

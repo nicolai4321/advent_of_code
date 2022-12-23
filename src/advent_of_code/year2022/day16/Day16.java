@@ -2,17 +2,17 @@ package advent_of_code.year2022.day16;
 
 import java.util.ArrayList;
 
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day16 extends RootDay {
     public Day16() {
-        super(true, true, "2056", true, true, "2513");
+        super(2022, 16, "2056", "2513");
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
 
     @Override
-    public String run1() {
-        String[] input = input();
+    public String run1(String input) {
         ArrayList<Valve> valves = generateValves(input);
         int getPressure = getMaxPressure(getStartValve(valves), 30, getRateValves(valves));
         
@@ -20,8 +20,7 @@ public class Day16 extends RootDay {
     }
     
     @Override
-    public String run2() {
-        String[] input = input();
+    public String run2(String input) {
         ArrayList<Valve> valves = generateValves(input);
         ArrayList<Valve> rateValves = getRateValves(valves);
         return getMaxPressureShared(rateValves.get(0), getStartValve(valves), rateValves, new ArrayList<Valve>(), new ArrayList<Valve>()) + "";
@@ -147,10 +146,10 @@ public class Day16 extends RootDay {
      * @param input
      * @return valves
      */
-    private ArrayList<Valve> generateValves(String[] input) {
+    private ArrayList<Valve> generateValves(String input) {
         //Extract basic info
         ArrayList<Valve> valves = new ArrayList<Valve>();
-        for (String line : input) {
+        for (String line : input.split("\n")) {
             String[] parts = line.split(";");
             String[] subParts = parts[0].split(" has flow rate=");
             String name = subParts[0].replaceAll("Valve ", "");
@@ -220,13 +219,5 @@ public class Day16 extends RootDay {
         }
         
         return cost;
-    }
-    
-    private static String[] example() {
-        return (Read.getStrings(2022, 16, "example01.txt")); 
-    }
-    
-    private static String[] input() {
-        return (Read.getStrings(2022, 16, "input01.txt")); 
     }
 }

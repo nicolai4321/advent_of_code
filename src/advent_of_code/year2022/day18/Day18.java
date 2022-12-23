@@ -4,25 +4,24 @@ import java.util.ArrayList;
 
 import advent_of_code.utils.Lists;
 import advent_of_code.utils.Log;
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day18 extends RootDay {
     public Day18() {
-        super(true, true, "4418", true, true, "2486");
+        super(2022, 18, "4418", "2486");
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
 
     @Override
-    public String run1() {
-        String[] input = input();
+    public String run1(String input) {
         ArrayList<Cube> cubes = mapToCubes(input);
         coverCubes(cubes);
         return countAllFreeSides(cubes) + "";
     }
 
     @Override
-    public String run2() {
-        String[] input = input();
+    public String run2(String input) {
         ArrayList<Cube> cubes = mapToCubes(input);        
         addTrappedAirCubes(cubes);
         coverCubes(cubes);
@@ -179,22 +178,14 @@ public class Day18 extends RootDay {
      * @param input
      * @return a list of cubes
      */
-    private ArrayList<Cube> mapToCubes(String[] input) {
+    private ArrayList<Cube> mapToCubes(String input) {
         ArrayList<Cube> cubes = new ArrayList<Cube>();
-        for (String line : input) {
+        for (String line : input.split("\n")) {
             String[] coords = line.split(",");
             int[] ints = Lists.stringsToInts(coords);
             cubes.add(new Cube(ints[0], ints[1], ints[2]));
         }
         
         return cubes;
-    }
-    
-    private static String[] example() {
-        return (Read.getStrings(2022, 18, "example01.txt")); 
-    }
-    
-    private static String[] input() {
-        return (Read.getStrings(2022, 18, "input01.txt")); 
     }
 }

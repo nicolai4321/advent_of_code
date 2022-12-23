@@ -3,22 +3,22 @@ package advent_of_code.year2022.day22;
 import java.util.ArrayList;
 
 import advent_of_code.utils.Grid;
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day22 extends RootDay {    
     public Day22() {
-        super(true, true, "117102", true, true, "135297");
+        super(2022, 22, "117102", "135297");
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
 
     /**
      * Simulate the movement with normal wrapping and give the password. The password is: 1000 * finalRow + 4 * finalColumn + facing
      */
     @Override
-    public String run1() {
-        String[] input = input();
+    public String run1(String input) {
         ArrayList<Instruction> instructions = getInstructions(input);
-        Grid<String> grid = generateGrid(input);
+        Grid<String> grid = generateGrid(input.split("\n"));
         Position position = getStartPosition(grid, Direction.RIGHT);
         executeInstructions(grid, position, instructions, null);        
         return getPassword(position) + "";
@@ -28,10 +28,9 @@ public class Day22 extends RootDay {
      * Simulate the movement with cube wrapping and give the password. The password is: 1000 * finalRow + 4 * finalColumn + facing
      */
     @Override
-    public String run2() {
-        String[] input = input();
+    public String run2(String input) {
         ArrayList<Instruction> instructions = getInstructions(input);
-        Grid<String> grid = generateGrid(input);
+        Grid<String> grid = generateGrid(input.split("\n"));
         Position position = getStartPosition(grid, Direction.RIGHT);
         executeInstructions(grid, position, instructions, generateCubes());
         return getPassword(position) + "";
@@ -360,8 +359,9 @@ public class Day22 extends RootDay {
      * @param input
      * @return instructions
      */
-    private ArrayList<Instruction> getInstructions(String[] input) {
-        String lastLine = input[input.length - 1];
+    private ArrayList<Instruction> getInstructions(String input) {
+        String[] inputs = input.split("\n");
+        String lastLine = inputs[inputs.length - 1];
         ArrayList<Instruction> instructions = new ArrayList<Instruction>();    
         Integer amount = null;
         
@@ -386,17 +386,5 @@ public class Day22 extends RootDay {
         }
         
         return instructions;
-    }
-    
-    private static String[] example() {
-        return Read.getStrings(2022, 22, "example01.txt"); 
-    }
-    
-    private static String[] example2() {
-        return Read.getStrings(2022, 22, "example02.txt"); 
-    }
-    
-    private static String[] input() {
-        return Read.getStrings(2022, 22, "input01.txt"); 
     }
 }

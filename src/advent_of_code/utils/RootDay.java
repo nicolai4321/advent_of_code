@@ -3,42 +3,97 @@ package advent_of_code.utils;
 public abstract class RootDay {
 	private final static String SEPARATOR = "---------------------";
 
-	private boolean enableRun1;
-	private boolean enableRun2;
-	private boolean enableTest1;
-	private boolean enableTest2;
+	private int year;
+	private int day;
+    private String input1 = null;
+    private String input2 = null;
+	private boolean enableRun1 = true;
+	private boolean enableRun2 = true;
+	private boolean enableTest1 = true;
+	private boolean enableTest2 = true;
 	private String result1;
 	private String result2;
 	
-	public RootDay(boolean enableRun1, boolean enableTest1, String result1, boolean enableRun2, boolean enableTest2, String result2) {
-		this.enableRun1 = enableRun1;
-		this.enableTest1 = enableTest1;
+	public RootDay(int year, int day, String result1, String result2) {
+	    this.year = year;
+	    this.day = day;
 		this.result1 = result1;
-		this.enableRun2 = enableRun2;
-		this.enableTest2 = enableTest2;
 		this.result2 = result2;
 	}
+	
+    /**
+     * @return result of part 1
+     */
+    protected abstract String run1(String input);
 
-	/**
-	 * @return result of part 1
-	 */
-	protected abstract String run1();
+    /**
+     * @return result of part 2
+     */
+    protected abstract String run2(String input);
 
-	/**
-	 * @return result of part 2
-	 */
-	protected abstract String run2();
-		
+    /**
+     * Disable run1
+     */
+    protected void disableRun1() {
+        enableRun1 = false;
+    }
+    
+    /**
+     * Disable run2
+     */
+    protected void disableRun2() {
+        enableRun2 = false;
+    }
+    
+    /**
+     * Disable test1
+     */
+    protected void disableTest1() {
+        enableTest1 = false;
+    }
+    
+    /**
+     * Disable test2
+     */
+    protected void disableTest2() {
+        enableTest2 = false;
+    }
+    
+    /**
+     * sets the input for run1()
+     * @param year
+     * @param day
+     * @param fileName
+     */
+    protected void setInput1(String fileName) {
+	    input1 = Read.getString(year, day, fileName); 
+	}
+	
+    /**
+     * sets the input for run2()
+     * @param year
+     * @param day
+     * @param fileName
+     */
+	protected void setInput2(String fileName) {
+        input2 = Read.getString(year, day, fileName); 
+    }
+
 	/**
 	 * Executes the two parts
 	 */
 	public void run() {
 		if (enableRun1) {
-			Log.show("Starting run1...\n");
-			String run1 = run1();
+		    if (input1 == null) {
+                throw new RuntimeException("No input defined for run1(). Use the method setInput1(fileName)");
+            }
+		    
+		    Log.show("Starting run1...\n");
+			
+			String run1 = run1(input1);
 			
 			if (enableTest1 && result1 != null && !result1.equals(run1)) {
-				throw new RuntimeException("Run 1 failed!: " + run1);
+				throw new RuntimeException("Run 1 failed for " + day + "/" + year + "! Got '" + run1 + "' but '" + result1 + "' was expected");
 			}
 			
 			String msg = SEPARATOR + "\n" +
@@ -52,11 +107,15 @@ public abstract class RootDay {
 		}
 		
 		if (enableRun2) {
+		    if (input2 == null) {
+                throw new RuntimeException("No input defined for run2(). Use the method setInput2(fileName)");
+            }
+		    
 			Log.show("Starting run2...\n");
-			String run2 = run2();
+			String run2 = run2(input2);
 
 			if (enableTest2 && result2 != null && !result2.equals(run2)) {
-				throw new RuntimeException("Run 2 failed!: " + run2);
+				throw new RuntimeException("Run 2 failed for " + day + "/" + year + "! Got '" + run2 + "' but '" + result2 + "' was expected");
 			}
 
 			String msg = SEPARATOR + "\n" +

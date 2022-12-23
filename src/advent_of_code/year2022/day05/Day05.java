@@ -3,17 +3,17 @@ package advent_of_code.year2022.day05;
 import java.util.ArrayList;
 
 import advent_of_code.utils.Lists;
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day05 extends RootDay {
     public Day05() {
-        super(true, true, "QMBMJDFTD", true, true, "NBTVTJNFJ");
+        super(2022, 5, "QMBMJDFTD", "NBTVTJNFJ");
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
 
     @Override
-    public String run1() {
-        String input = input();
+    public String run1(String input) {
         ArrayList<ArrayList<String>> stacks = Lists.getDynamic(input, 1, 3, false, false, false, "[a-zA-Z\\s]");
         moveFromInput(stacks, input, false);
 
@@ -21,8 +21,7 @@ public class Day05 extends RootDay {
     }
     
     @Override
-    public String run2() {
-        String input = input();
+    public String run2(String input) {
         ArrayList<ArrayList<String>> stacks = Lists.getDynamic(input, 1, 3, false, false, false, "[a-zA-Z\\s]");
         moveFromInput(stacks, input, true);
         
@@ -127,13 +126,5 @@ public class Day05 extends RootDay {
         }
         col.remove(index);
         return value;
-    }
-    
-    private static String example() {
-        return Read.getString(2022, 5, "example01.txt"); 
-    }
-    
-    private static String input() {
-        return Read.getString(2022, 5, "input01.txt"); 
     }
 }

@@ -1,19 +1,18 @@
 package advent_of_code.year2022.day04;
 
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day04 extends RootDay {
     public Day04() {
-        super(true, true, "550", true, true, "931");
+        super(2022, 4, "550", "931");
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
 
     @Override
-    public String run1() {
-        String[] input = input();
-        
+    public String run1(String input) {
         int overlap = 0;
-        for (String pair : input) {
+        for (String pair : input.split("\n")) {
             overlap += calPairOverlapFully(pair);
         }
         
@@ -21,11 +20,10 @@ public class Day04 extends RootDay {
     }
     
     @Override
-    public String run2() {
-        String[] input = input();
+    public String run2(String input) {
         int overlap = 0;
         
-        for (String pair : input) {
+        for (String pair : input.split("\n")) {
             overlap += calPairOverlap(pair);
         }
         return overlap + "";
@@ -73,13 +71,5 @@ public class Day04 extends RootDay {
     private int[] getRange(String rangeString) {
         String[] split = rangeString.split("-");
         return new int[] { Integer.parseInt(split[0]), Integer.parseInt(split[1]) };
-    }
-    
-    private static String[] example() {
-        return Read.getStrings(2022, 4, "example01.txt"); 
-    }
-    
-    private static String[] input() {
-        return Read.getStrings(2022, 4, "input01.txt"); 
     }
 }

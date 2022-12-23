@@ -1,22 +1,21 @@
 package advent_of_code.year2022.day06;
 
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day06 extends RootDay {
     public Day06() {
-        super(true, true, "1538", true, true, "2315");
+        super(2022, 6, "1538", "2315");
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
 
     @Override
-    public String run1() {
-        String input = input();
+    public String run1(String input) {
         return getMarker(input, 4) + "";
     }
 
     @Override
-    public String run2() {
-        String input = input();
+    public String run2(String input) {
         return getMarker(input, 14) + "";
     }
     
@@ -44,13 +43,5 @@ public class Day06 extends RootDay {
         }
         
         return true;
-    }
-    
-    private static String example() {
-        return Read.getString(2022, 6, "example01.txt"); 
-    }
-    
-    private static String input() {
-        return Read.getString(2022, 6, "input01.txt"); 
     }
 }

@@ -4,25 +4,24 @@ import java.util.ArrayList;
 
 import advent_of_code.utils.Lists;
 import advent_of_code.utils.Log;
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day10 extends RootDay {
     public Day10() {
-        super(true, true, "11720", true, true, null); //answer for run2=ERCREPCJ
+        super(2022, 10, "11720", null); //answer for run2=ERCREPCJ
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
 
     @Override
-    public String run1() {
-        String[] input = input();
+    public String run1(String input) {
         String[][] commands = getCommands(input);
         ArrayList<Integer> signalStrengths = drawSprite(commands);
         return Lists.sum(signalStrengths) + "";
     }
 
     @Override
-    public String run2() {
-        String[] input = input();
+    public String run2(String input) {
         String[][] commands = getCommands(input);
         drawSprite(commands);
         return null;
@@ -91,19 +90,12 @@ public class Day10 extends RootDay {
         return pixels;
     }
     
-    private int sum(ArrayList<Integer> signalStrengths) {
-        int sum = 0;
-        for (int i : signalStrengths) {
-            sum += i;
-        }
-        return sum;
-    }
-    
-    private String[][] getCommands(String[] input) {
-        String[][] commands = new String[input.length][2];
+    private String[][] getCommands(String input) {
+        String[] inputs = input.split("\n");
+        String[][] commands = new String[inputs.length][2];
         
-        for (int i=0; i<input.length; i++) {
-            String[] inputArr = input[i].split(" ");
+        for (int i=0; i<inputs.length; i++) {
+            String[] inputArr = inputs[i].split(" ");
             commands[i][0] = inputArr[0];
             if (inputArr.length == 2) {
                 commands[i][1] = inputArr[1];                
@@ -111,13 +103,5 @@ public class Day10 extends RootDay {
         }
         
         return commands;
-    }
-    
-    private static String[] example() {
-        return Read.getStrings(2022, 10, "example01.txt"); 
-    }
-    
-    private static String[] input() {
-        return Read.getStrings(2022, 10, "input01.txt"); 
     }
 }

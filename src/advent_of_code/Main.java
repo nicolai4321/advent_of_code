@@ -27,13 +27,14 @@ import advent_of_code.year2022.day20.Day20;
 import advent_of_code.year2022.day21.Day21;
 import advent_of_code.year2022.day22.Day22;
 import advent_of_code.year2022.day23.Day23;
+import advent_of_code.year2022.day24.Day24;
 
 public class Main {
     public static void main(String[] args) {
         ArrayList<RootDay> days2022 = getDaysFor2022();
         //runAll(days2022);
         
-        new Day22().run();
+        new Day24().run();
     }
     
     private static void runAll(ArrayList<RootDay> days) {

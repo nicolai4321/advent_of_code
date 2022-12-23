@@ -2,12 +2,13 @@ package advent_of_code.year2022.day19;
 
 import java.util.ArrayList;
 
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day19 extends RootDay {
     public Day19() {
-        super(true, true, "1199", true, true, "3510");
+        super(2022, 19, "1199", "3510");
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
 
     /**
@@ -15,8 +16,7 @@ public class Day19 extends RootDay {
      * the maximum amount of geodes that is possible to obtain in 24 rounds
      */
     @Override
-    public String run1() {
-        String[] input = input();
+    public String run1(String input) {
         ArrayList<Blueprint> blueprints = generateBlueprints(input);
         ArrayList<int[]> geodesForBlueprints = getGeodesForBlueprints(blueprints, 24);
         return getQualityLevelSum(geodesForBlueprints) + "";
@@ -27,8 +27,7 @@ public class Day19 extends RootDay {
      * the three first blueprints
      */
     @Override
-    public String run2() {
-        String[] input = input();
+    public String run2(String input) {
         ArrayList<Blueprint> blueprints = generateBlueprints(input);
         ArrayList<Blueprint> threeBlueprints = new ArrayList<Blueprint>();
         for (int i = 0; i < 3; i++) {
@@ -214,9 +213,9 @@ public class Day19 extends RootDay {
      * @param input
      * @return list of blueprints
      */
-    private ArrayList<Blueprint> generateBlueprints(String[] input) {
+    private ArrayList<Blueprint> generateBlueprints(String input) {
         ArrayList<Blueprint> blueprints = new ArrayList<Blueprint>();
-        for (String line : input) {
+        for (String line : input.split("\n")) {
             line = line.replaceAll("\\.$", "");
             String[] sections = line.split(": ");
             String[] robotSections = sections[1].split("\\. ");
@@ -234,13 +233,5 @@ public class Day19 extends RootDay {
         }
 
         return blueprints;
-    }
-
-    private static String[] example() {
-        return (Read.getStrings(2022, 19, "example01.txt"));
-    }
-
-    private static String[] input() {
-        return (Read.getStrings(2022, 19, "input01.txt"));
     }
 }

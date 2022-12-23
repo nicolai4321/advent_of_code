@@ -5,21 +5,22 @@ import java.util.ArrayList;
 
 import advent_of_code.utils.BigInt;
 import advent_of_code.utils.Lists;
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day20 extends RootDay {
     public Day20() {
-        super(true, true, "2215", true, true, "1623178306");
+        super(2022, 20, "2215", "8927480683");
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
 
     /**
      * Mix the numbers and sum the values of the three groove coordinates at 1000, 2000 and 3000.
      */
     @Override
-    public String run1() {
-        int[] input = input();
-        ArrayList<Value> mixed = mix(input, 1);
+    public String run1(String input) {
+        int[] ints = Lists.stringsToInts(input.split("\n"));
+        ArrayList<Value> mixed = mix(ints, 1);
         
         int g0 = grooveCoord(mixed, 1000);
         int g1 = grooveCoord(mixed, 2000);
@@ -31,11 +32,11 @@ public class Day20 extends RootDay {
      * Multiply the numbers with the decryption key, mix them and sum the values of the tree groove coordinates at 1000, 2000 and 3000
      */
     @Override
-    public String run2() {
-        int[] input = example();
+    public String run2(String input) {
+        int[] ints = Lists.stringsToInts(input.split("\n"));
         int decryptionKey = 811589153;
-        applyDecryptionKey(input, decryptionKey);
-        ArrayList<Value> mixed = mix(input, 10);
+        applyDecryptionKey(ints, decryptionKey);
+        ArrayList<Value> mixed = mix(ints, 10);
 
         BigInteger g0 = decryptGrooveCoord(mixed, 1000, decryptionKey);
         BigInteger g1 = decryptGrooveCoord(mixed, 2000, decryptionKey);
@@ -153,25 +154,5 @@ public class Day20 extends RootDay {
         Value i1 = ints.get(index1);
         ints.set(index0, i1);
         ints.set(index1, i0);
-    }
-
-    private static int[] example() {
-        return Lists.stringsToInts(Read.getStrings(2022, 20, "example01.txt")); 
-    }
-    
-    private static int[] example2() {
-        return Lists.stringsToInts(Read.getStrings(2022, 20, "example02.txt")); 
-    }
-    
-    private static int[] example3() {
-        return Lists.stringsToInts(Read.getStrings(2022, 20, "example3.txt")); 
-    }
-    
-    private static int[] example4() {
-        return Lists.stringsToInts(Read.getStrings(2022, 20, "example4.txt")); 
-    }
-    
-    private static int[] input() {
-        return Lists.stringsToInts(Read.getStrings(2022, 20, "input01.txt")); 
     }
 }

@@ -5,25 +5,22 @@ import java.util.HashMap;
 
 import advent_of_code.utils.Lists;
 import advent_of_code.utils.Log;
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day08 extends RootDay {
 	public Day08() {
-		super(true, true, "532", true, true, "1011284");
+		super(2021, 8, "532", "1011284");
 	}
 
 	@Override
-	public String run1() {
-		String[] input = input();
-		ArrayList<ArrayList<Integer>> outputValues = outputSimpleValues(input);
+	public String run1(String input) {
+		ArrayList<ArrayList<Integer>> outputValues = outputSimpleValues(input.split("\n"));
 		return count(outputValues) + "";
 	}
 
 	@Override
-	public String run2() {
-		String[] input = input();
-		ArrayList<Integer> outputValues = outputValues(input);
+	public String run2(String input) {
+		ArrayList<Integer> outputValues = outputValues(input.split("\n"));
 		return Lists.sum(outputValues) + "";
 	}
 
@@ -174,13 +171,5 @@ public class Day08 extends RootDay {
 	
 	private static boolean containAndDifferent(HashMap<Integer, Display> map, int nr, String code) {
 		return map.get(nr) != null && !map.get(nr).eq(code);
-	}
-	
-	private static String[] example() {
-		return Read.getStrings(2021, 8, "example01.txt"); 
-	}
-	
-	private static String[] input() {
-		return Read.getStrings(2021, 8, "input01.txt"); 
 	}
 }

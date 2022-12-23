@@ -1,23 +1,21 @@
 package advent_of_code.year2022.day02;
 
-import advent_of_code.utils.Day;
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day02 extends RootDay {
     public Day02() {
-        super(true, true, "9177", true, true, "12111");
+        super(2022, 2, "9177", "12111");
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
     
     @Override
-    public String run1() {
-        String[] input = input();
+    public String run1(String input) {
         return getTotalScore(input, false) + "";
     }
 
     @Override
-    public String run2() {
-        String[] input = input();
+    public String run2(String input) {
         return getTotalScore(input, true) + "";
     }
     
@@ -26,7 +24,8 @@ public class Day02 extends RootDay {
      * @param usePredictionMap
      * @return total score
      */
-    private int getTotalScore(String[] rounds, boolean usePredictionMap) {
+    private int getTotalScore(String input, boolean usePredictionMap) {
+        String[] rounds = input.split("\n");
         int points = 0;
         for (String round : rounds) {
             String symbol0 = round.split(" ")[0];
@@ -119,13 +118,5 @@ public class Day02 extends RootDay {
         if (opp.equals("s") && you.equals("s")) return 3;
         
         throw new RuntimeException("Could not calculate outcome points");
-    }
-    
-    private static String[] example() {
-        return Read.getStrings(2022, 2, "example01.txt"); 
-    }
-    
-    private static String[] input() {
-        return Read.getStrings(2022, 2, "input01.txt"); 
     }
 }

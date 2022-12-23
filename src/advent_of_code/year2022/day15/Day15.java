@@ -5,26 +5,25 @@ import java.util.ArrayList;
 
 import advent_of_code.utils.BigInt;
 import advent_of_code.utils.Log;
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day15 extends RootDay {
     public Day15() {
-        super(true, true, "5688618", true, true, "12625383204261");
+        super(2022, 15, "5688618", "12625383204261");
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
 
     @Override
-    public String run1() {
-        String[] input = input();
+    public String run1(String input) {
         ArrayList<int[]> machines = generateMachines(input);
         ArrayList<ArrayList<int[]>> distanceInfo = getDistanceInfo(machines);
         return excludeNr(distanceInfo, 2000000) + "";
     }
 
     @Override
-    public String run2() {
+    public String run2(String input) {
         int max = 4000000;
-        String[] input = input();
         
         ArrayList<int[]> machines = generateMachines(input);
         ArrayList<ArrayList<int[]>> distanceInfo = getDistanceInfo(machines);        
@@ -149,10 +148,10 @@ public class Day15 extends RootDay {
         return distanceX + distanceY;
     }
 
-    private ArrayList<int[]> generateMachines(String[] input) {
+    private ArrayList<int[]> generateMachines(String input) {
         ArrayList<int[]> positions = new ArrayList<int[]>();
         
-        for (String line : input) {
+        for (String line : input.split("\n")) {
             int[] poss = new int[4];
             
             String[] split = line.split(":");
@@ -170,13 +169,5 @@ public class Day15 extends RootDay {
             positions.add(poss);
         }
         return positions;
-    }
-
-    private static String[] example() {
-        return (Read.getStrings(2022, 15, "example01.txt")); 
-    }
-    
-    private static String[] input() {
-        return (Read.getStrings(2022, 15, "input01.txt")); 
     }
 }

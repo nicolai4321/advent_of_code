@@ -3,17 +3,17 @@ package advent_of_code.year2022.day14;
 import java.util.ArrayList;
 
 import advent_of_code.utils.Grid;
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day14 extends RootDay {
     public Day14() {
-        super(true, true, "795", true, true, "30214");
+        super(2022, 14, "795", "30214");
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
 
     @Override
-    public String run1() {
-        String[] input = input();
+    public String run1(String input) {
         ArrayList<ArrayList<int[]>> structures = transformInput(input);
         int[] boundaries = findBoundaries(structures);
         Grid<String> grid = generateGrid(structures, boundaries);
@@ -22,8 +22,7 @@ public class Day14 extends RootDay {
     }
 
     @Override
-    public String run2() {
-        String[] input = input();
+    public String run2(String input) {
         ArrayList<ArrayList<int[]>> structures = transformInput(input);
         insertHorizontalLine(structures, 175);
         int[] boundaries = findBoundaries(structures);
@@ -199,9 +198,9 @@ public class Day14 extends RootDay {
      * @param input
      * @return list of structures
      */
-    private ArrayList<ArrayList<int[]>> transformInput(String[] input) {
+    private ArrayList<ArrayList<int[]>> transformInput(String input) {
         ArrayList<ArrayList<int[]>> structures = new ArrayList<ArrayList<int[]>>();
-        for (String line : input) {
+        for (String line : input.split("\n")) {
             ArrayList<int[]> lineSegments = new ArrayList<int[]>();
             for (String coords : line.split(" -> ")) {
                 String[] coord = coords.split(",");
@@ -213,13 +212,5 @@ public class Day14 extends RootDay {
             structures.add(lineSegments);
         }
         return structures;
-    }
-
-    private static String[] example() {
-        return (Read.getStrings(2022, 14, "example01.txt")); 
-    }
-    
-    private static String[] input() {
-        return (Read.getStrings(2022, 14, "input01.txt")); 
     }
 }

@@ -6,25 +6,24 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import advent_of_code.utils.Log;
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 //TODO refactor
 public class Day13 extends RootDay {
     public Day13() {
-        super(true, true, "4809", true, true, "22600");
+        super(2022, 13, "4809", "22600");
+        setInput1("input01.txt");
+        setInput2("input01.txt");
     }
 
     @Override
-    public String run1() {
-        String[] input = input();
-        ArrayList<Item[]> pairs = getPairs(input);        
+    public String run1(String input) {
+        ArrayList<Item[]> pairs = getPairs(input);
         return examinePairs(pairs) + "";
     }
 
     @Override
-    public String run2() {
-        String[] input = input();
+    public String run2(String input) {
         ArrayList<Item[]> pairs = getPairs(input);
         ArrayList<Item> pairsOrdered = orderPairs(pairs);
         return getDecoderIndex(pairsOrdered) +"";
@@ -160,14 +159,15 @@ public class Day13 extends RootDay {
      * @param input
      * @return
      */
-    private ArrayList<Item[]> getPairs(String[] input) {
+    private ArrayList<Item[]> getPairs(String input) {
         ArrayList<Item[]> pairs = new ArrayList<Item[]>();
+        String[] strings = (input + "\n ").split("\n");
         
-        for (int i=0; i<input.length; i++) {
-            String s = input[i];
+        for (int i=0; i<strings.length; i++) {
+            String s = strings[i];
             if (s.isBlank()) {
-                String s0 = input[i-1];
-                String s1 = input[i-2];
+                String s0 = strings[i-1];
+                String s1 = strings[i-2];
                 
                 Item[] pair = new Item[2];
                 pair[0] = getItem(s1);
@@ -244,13 +244,5 @@ public class Day13 extends RootDay {
         for (Item item : items) {
             Log.show(item.toString());
         }
-    }
-    
-    private static String[] example() {
-        return (Read.getString(2022, 13, "example01.txt") + "\n ").split("\n"); 
-    }
-    
-    private static String[] input() {
-        return (Read.getString(2022, 13, "input01.txt") + "\n ").split("\n"); 
     }
 }
