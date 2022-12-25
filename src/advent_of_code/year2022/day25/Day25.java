@@ -3,6 +3,7 @@ package advent_of_code.year2022.day25;
 import java.math.BigInteger;
 
 import advent_of_code.utils.BigInt;
+import advent_of_code.utils.Char;
 import advent_of_code.utils.RootDay;
 
 public class Day25 extends RootDay {
@@ -12,6 +13,9 @@ public class Day25 extends RootDay {
         disableRun2();
     }
     
+    /**
+     * Return the sum of the SNAFU-numbers in the SNAFU-format
+     */
     @Override
     public String run1(String input) {
         BigInteger[] ints = mapInput(input);
@@ -66,7 +70,7 @@ public class Day25 extends RootDay {
         String output = "";
         for (int i=base5.length()-1; 0<=i; i--) {
             char c = base5.charAt(i);
-            int v = c - 48;
+            int v = Char.toInt(c);
             v += carry;
             
             if (carry != 0) {

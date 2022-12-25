@@ -19,7 +19,7 @@ public class Cube {
     private int y;
     private int z;
     private int[] sidesCovered;
-    
+
     public Cube(int x, int y, int z) {
         this.x = x;
         this.y = y;

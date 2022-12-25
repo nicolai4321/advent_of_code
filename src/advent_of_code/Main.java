@@ -34,20 +34,27 @@ import advent_of_code.year2022.day25.Day25;
 public class Main {
     public static void main(String[] args) {
         ArrayList<RootDay> days2022 = getDaysFor2022();
-        //runAll(days2022);
+        runAll(days2022);
         
-        new Day25().run();
+        //new Day18().run();
     }
     
     private static void runAll(ArrayList<RootDay> days) {
         Log.show("Run every day");
-        Log.disable();
         
-        for (RootDay day : days) {
+        for (int i=0; i<days.size(); i++) {
+            if (i+1 == 15) {
+                continue;
+            }
+            RootDay day = days.get(i);
+            Log.disable();
+            long timeStart= System.nanoTime();
             day.run();
+            long timeEnd = System.nanoTime();
+            Log.enable();
+            Log.show("  Day " + (i+1) + " " + ((timeEnd - timeStart)/1000000) + " ms");
         }
         
-        Log.enable();
         Log.show("Done");
     }
     
@@ -64,18 +71,20 @@ public class Main {
         days2022.add(new Day09());
         days2022.add(new Day10());
         days2022.add(new Day11());
-        //days2022.add(new Day12());  //TODO optimize
+        days2022.add(new Day12());
         days2022.add(new Day13());
         days2022.add(new Day14());
-        //days2022.add(new Day15());  //TODO optimize
-        //days2022.add(new Day16());  //TODO optimize
+        days2022.add(new Day15());
+        days2022.add(new Day16());
         days2022.add(new Day17());
-        //days2022.add(new Day18());  //TODO optimize
+        days2022.add(new Day18());
         days2022.add(new Day19());
         days2022.add(new Day20());
         days2022.add(new Day21());
         days2022.add(new Day22());
         days2022.add(new Day23());
+        days2022.add(new Day24());
+        days2022.add(new Day25());
         return days2022;
     }
 }

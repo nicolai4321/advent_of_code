@@ -11,6 +11,9 @@ public class Day16 extends RootDay {
         setInput2("input01.txt");
     }
 
+    /**
+     * What is the most pressure you can release in 30 minutes?
+     */
     @Override
     public String run1(String input) {
         ArrayList<Valve> valves = generateValves(input);
@@ -18,7 +21,10 @@ public class Day16 extends RootDay {
         
         return getPressure + "";
     }
-    
+
+    /**
+     * With you and an elephant working together for 26 minutes, what is the most pressure you could release?
+     */
     @Override
     public String run2(String input) {
         ArrayList<Valve> valves = generateValves(input);

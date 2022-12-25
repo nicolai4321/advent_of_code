@@ -26,7 +26,16 @@ public class MathOp {
      * @param y1
      * @return manhatten distance
      */
-    public static int getManhattenDistance(int x0, int y0, int x1, int y1) {
+    public static int manhattenDistance(int x0, int y0, int x1, int y1) {
         return (Math.max(x0, x1) - Math.min(x0, x1)) + (Math.max(y0, y1) - Math.min(y0, y1));
+    }
+    
+    /**
+     * @param x0
+     * @param x1
+     * @return manhatten distance
+     */
+    public static int manhattenDistance1D(int x0, int x1) {
+        return (Math.max(x0, x1) - Math.min(x0, x1));
     }
 }

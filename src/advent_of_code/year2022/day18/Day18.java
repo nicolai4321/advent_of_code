@@ -12,7 +12,10 @@ public class Day18 extends RootDay {
         setInput1("input01.txt");
         setInput2("input01.txt");
     }
-
+    
+    /**
+     * What is the surface area of your scanned lava droplet?
+     */
     @Override
     public String run1(String input) {
         ArrayList<Cube> cubes = mapToCubes(input);
@@ -20,6 +23,9 @@ public class Day18 extends RootDay {
         return countAllFreeSides(cubes) + "";
     }
 
+    /**
+     * What is the exterior surface area of your scanned lava droplet?
+     */
     @Override
     public String run2(String input) {
         ArrayList<Cube> cubes = mapToCubes(input);        
@@ -50,7 +56,6 @@ public class Day18 extends RootDay {
         }
         
         //Find air cubes
-        ArrayList<Cube> airCubes = new ArrayList<Cube>();
         for (int x=minX; x<=maxX; x++) {
             Log.show("(" + x + "/" + maxX + ")");
             for (int y=minY; y<=maxY; y++) {
@@ -64,16 +69,10 @@ public class Day18 extends RootDay {
                     }
                     
                     if (potentialAirCube != null && !canEscape(cubes, new ArrayList<Cube>(), potentialAirCube, minX, maxX, minY, maxY, minZ, maxZ)) {
-                        airCubes.add(potentialAirCube);
+                        cubes.add(potentialAirCube);
                     }
                 }                
             }
-        }
-        
-        Log.show("Found " + airCubes.size() + " air cube(s)");
-        
-        for (Cube cube : airCubes) {
-            cubes.add(cube);
         }
     }
     
@@ -117,28 +116,31 @@ public class Day18 extends RootDay {
         }
         
         visited.add(cubeStart);
-        if (canEscape(cubes, visited, new Cube(cubeStart.getX() + 1, cubeStart.getY(), cubeStart.getZ()), minX, maxX, minY, maxY, minZ, maxZ)) {
+        int x = cubeStart.getX();
+        int y = cubeStart.getY();
+        int z = cubeStart.getZ();
+
+        if (canEscape(cubes, visited, new Cube(x + 1, y, z), minX, maxX, minY, maxY, minZ, maxZ)) {
             return true;
         }
-        if (canEscape(cubes, visited, new Cube(cubeStart.getX() - 1, cubeStart.getY(), cubeStart.getZ()), minX, maxX, minY, maxY, minZ, maxZ)) {
+        if (canEscape(cubes, visited, new Cube(x - 1, y, z), minX, maxX, minY, maxY, minZ, maxZ)) {
             return true;
         }
-        if (canEscape(cubes, visited, new Cube(cubeStart.getX(), cubeStart.getY() + 1, cubeStart.getZ()), minX, maxX, minY, maxY, minZ, maxZ)) {
+        if (canEscape(cubes, visited, new Cube(x, y + 1, z), minX, maxX, minY, maxY, minZ, maxZ)) {
             return true;
         }
-        if (canEscape(cubes, visited, new Cube(cubeStart.getX(), cubeStart.getY() - 1, cubeStart.getZ()), minX, maxX, minY, maxY, minZ, maxZ)) {
+        if (canEscape(cubes, visited, new Cube(x, y - 1, z), minX, maxX, minY, maxY, minZ, maxZ)) {
             return true;
         }
-        if (canEscape(cubes, visited, new Cube(cubeStart.getX(), cubeStart.getY(), cubeStart.getZ() + 1), minX, maxX, minY, maxY, minZ, maxZ)) {
+        if (canEscape(cubes, visited, new Cube(x, y, z + 1), minX, maxX, minY, maxY, minZ, maxZ)) {
             return true;
         }
-        if (canEscape(cubes, visited, new Cube(cubeStart.getX(), cubeStart.getY(), cubeStart.getZ() - 1), minX, maxX, minY, maxY, minZ, maxZ)) {
+        if (canEscape(cubes, visited, new Cube(x, y, z - 1), minX, maxX, minY, maxY, minZ, maxZ)) {
             return true;
         }
         
         return false;
     }
-    
     
     /**
      * Checks every cube and covers the sides that are touching other cubes

@@ -1,27 +1,36 @@
 package advent_of_code.year2022.day12;
 
 import advent_of_code.utils.Grid;
-import advent_of_code.utils.Read;
 import advent_of_code.utils.RootDay;
 
 public class Day12 extends RootDay {
+    private static String START = "S";
+    private static String END = "E";
+    private static String VISITED = "v";
+    
     public Day12() {
         super(2022, 12, "490", "488");
         setInput1("input01.txt");
         setInput2("input01.txt");
     }
 
+    /**
+     * What is the fewest steps required to move from your current position to the location that should get the best signal?
+     */
     @Override
     public String run1(String input) {
         Grid<Integer> heightMap = getHeightMap(input);
-        Grid<String> directionMap = getDirectionMap(heightMap);
+        Grid<String> directionMap = getDirectionMapFromBottom(heightMap);
         return calculateSteps(directionMap) + "";
     }
     
+    /**
+     * What is the fewest steps required to move starting from any square with elevation a to the location that should get the best signal?
+     */
     @Override
     public String run2(String input) {
         Grid<Integer> heightMap = getHeightMap(input);
-        Grid<String> directionMap = getDirectionMap2(heightMap);
+        Grid<String> directionMap = getDirectionMapFromTop(heightMap);
         return calculateSteps(directionMap) + "";
     }
     
@@ -33,13 +42,13 @@ public class Day12 extends RootDay {
         for (int x=0; x<dirMap.getWidth(); x++) {
             for (int y=0; y<dirMap.getHeight(); y++) {
                 String s = dirMap.get(x, y);
-                if (s.contains("S")) {
+                if (s.contains(START)) {
                     return traverse(dirMap, x, y, 0);
                 }
             }
         }
         
-        throw new RuntimeException("Error, could not find start position");
+        throw new RuntimeException("Could not find start position");
     }
 
     /**
@@ -51,23 +60,22 @@ public class Day12 extends RootDay {
      * @return amount of steps from (x,y) to a finish
      */
     private int traverse(Grid<String> directionMap, int x, int y, int steps) {
-        String options = directionMap.get(x, y);
-        Integer otherSteps = null;
+        String directions = directionMap.get(x, y);
 
         //logic for visiting cell
-        if (options.contains("v")) {
-            otherSteps = Integer.parseInt(options.replaceAll(".*v", ""));
+        if (directions.contains(VISITED)) {
+            Integer otherSteps = Integer.parseInt(directions.replaceAll(".*" + VISITED, ""));
             if (otherSteps <= steps) {
                 return Integer.MAX_VALUE;
             } else {
-                directionMap.set(x, y, options.replaceAll("[0-9]+", "") + steps);
+                directionMap.set(x, y, directions.replaceAll("[0-9]+", "") + steps);
             }
         } else {
-            directionMap.set(x, y, options + "v" + steps);
+            directionMap.set(x, y, directions + VISITED + steps);
         }
         
         //logic for visiting next cell
-        if (options.contains("E")) {
+        if (directions.contains(END)) {
             return steps;
         } else {
             int l = Integer.MAX_VALUE;
@@ -75,19 +83,19 @@ public class Day12 extends RootDay {
             int u = Integer.MAX_VALUE;
             int d = Integer.MAX_VALUE;
             
-            if (options.contains("l")) {
+            if (directions.contains("l")) {
                 l = traverse(directionMap, x - 1, y, steps + 1);
             }
             
-            if (options.contains("r")) {
+            if (directions.contains("r")) {
                 r = traverse(directionMap, x + 1, y, steps + 1);
             }
             
-            if (options.contains("d")) {
+            if (directions.contains("d")) {
                 d = traverse(directionMap, x, y + 1, steps + 1);
             }
             
-            if (options.contains("u")) {
+            if (directions.contains("u")) {
                 u = traverse(directionMap, x, y - 1, steps + 1);
             }
             
@@ -95,7 +103,12 @@ public class Day12 extends RootDay {
         }
     }
 
-    private Grid<String> getDirectionMap2(Grid<Integer> heightMap) {
+    /**
+     * 
+     * @param heightMap
+     * @return direction map from the top
+     */
+    private Grid<String> getDirectionMapFromTop(Grid<Integer> heightMap) {
         Grid<String> directionMap = new Grid<String>(heightMap.getWidth(), heightMap.getHeight(), false);
         
         for (int x=0; x<directionMap.getWidth(); x++) {
@@ -104,9 +117,9 @@ public class Day12 extends RootDay {
                 String direction = "";
                 
                 if (height == 0 || height == 1) {
-                    direction += "E";
+                    direction += END;
                 } else if (height == 27) {
-                    direction += "S";
+                    direction += START;
                 }
                 
                 //left
@@ -149,18 +162,10 @@ public class Day12 extends RootDay {
     }
     
     /**
-     * S: start
-     * E: end
-     * 
-     * u: up
-     * d: down
-     * l: left
-     * r: right
-     * 
      * @param heightMap
-     * @return
+     * @return direction map from the bottom
      */
-    private Grid<String> getDirectionMap(Grid<Integer> heightMap) {
+    private Grid<String> getDirectionMapFromBottom(Grid<Integer> heightMap) {
         Grid<String> dirMap = new Grid<String>(heightMap.getWidth(), heightMap.getHeight(), false);
         dirMap.set("u");
         
@@ -170,9 +175,9 @@ public class Day12 extends RootDay {
                 String dir = "";
                 
                 if (height == 0) {
-                    dir += "S";
+                    dir += START;
                 } else if (height == 27) {
-                    dir += "E";
+                    dir += END;
                 }
                 
                 //left
@@ -211,7 +216,6 @@ public class Day12 extends RootDay {
             }
         }
         
-        
         return dirMap;
     }
     
@@ -220,7 +224,7 @@ public class Day12 extends RootDay {
      * @return heightMap
      */
     private Grid<Integer> getHeightMap(String input) {
-        Grid<String> grid = new Grid<String>(input.split("\n"), true);
+        Grid<String> grid = new Grid<String>(input, true);
         for (int x=0; x<grid.getWidth(); x++) {
             for (int y=0; y<grid.getHeight(); y++) {
                 char c = grid.get(x, y).charAt(0);
@@ -236,22 +240,14 @@ public class Day12 extends RootDay {
      * @return corresponding int
      */
     private int charToInt(char c) {
-        if (c == 'S') {
+        if (c == START.charAt(0)) {
             return 0;
         }
 
-        if (c == 'E') {
+        if (c == END.charAt(0)) {
             return 27;
         }
         
         return c - 96;
-    }
-    
-    private static String[] example() {
-        return Read.getStrings(2022, 12, "example01.txt"); 
-    }
-    
-    private static String[] input() {
-        return Read.getStrings(2022, 12, "input01.txt"); 
     }
 }

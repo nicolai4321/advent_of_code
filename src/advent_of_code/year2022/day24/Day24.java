@@ -1,6 +1,7 @@
 package advent_of_code.year2022.day24;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import advent_of_code.utils.Direction;
 import advent_of_code.utils.Grid;
@@ -15,6 +16,9 @@ public class Day24 extends RootDay {
         setInput2("input01.txt");
     }
     
+    /**
+     * What is the fewest number of minutes required to avoid the blizzards and reach the goal?
+     */
     @Override
     public String run1(String input) {
         Grid<String> grid = generateGrid(input);
@@ -24,9 +28,12 @@ public class Day24 extends RootDay {
         int[] startPos = getStartPosition(grid);
         int[] endPos = getEndPosition(grid);
         
-        return reachGoal(startPos[0], startPos[1], endPos[0], endPos[1], blizzardStates, 0, new ArrayList<int[]>(), new ArrayList<int[]>()) + "";
+        return reachGoal(startPos[0], startPos[1], endPos[0], endPos[1], blizzardStates, 0, createEmptyHashMap(grid.getHeight()), new ArrayList<int[]>()) + "";
     }
     
+    /**
+     * What is the fewest number of minutes required to reach the goal, go back to the start, then reach the goal again?
+     */
     @Override
     public String run2(String input) {
         Grid<String> grid = generateGrid(input);
@@ -36,10 +43,22 @@ public class Day24 extends RootDay {
         int[] startPos = getStartPosition(grid);
         int[] endPos = getEndPosition(grid);
         
-        int minutes0 = reachGoal(startPos[0], startPos[1], endPos[0], endPos[1], blizzardStates, 0, new ArrayList<int[]>(), new ArrayList<int[]>());
-        int minutes1 = reachGoal(endPos[0], endPos[1], startPos[0], startPos[1], blizzardStates, minutes0, new ArrayList<int[]>(), new ArrayList<int[]>());
-        int minutes2 = reachGoal(startPos[0], startPos[1], endPos[0], endPos[1], blizzardStates, minutes1, new ArrayList<int[]>(), new ArrayList<int[]>());
+        int minutes0 = reachGoal(startPos[0], startPos[1], endPos[0], endPos[1], blizzardStates, 0, createEmptyHashMap(grid.getHeight()), new ArrayList<int[]>());
+        int minutes1 = reachGoal(endPos[0], endPos[1], startPos[0], startPos[1], blizzardStates, minutes0, createEmptyHashMap(grid.getHeight()), new ArrayList<int[]>());
+        int minutes2 = reachGoal(startPos[0], startPos[1], endPos[0], endPos[1], blizzardStates, minutes1, createEmptyHashMap(grid.getHeight()), new ArrayList<int[]>());
         return (minutes2) + "";
+    }
+    
+    /**
+     * @param height
+     * @return a hash map with empty lists
+     */
+    private static HashMap<Integer, ArrayList<int[]>> createEmptyHashMap(int height) {
+        HashMap<Integer, ArrayList<int[]>> visited = new HashMap<Integer, ArrayList<int[]>>();
+        for (int y=0; y<height; y++) {
+            visited.put(y, new ArrayList<int[]>());
+        }
+        return visited;
     }
 
     /**
@@ -53,7 +72,7 @@ public class Day24 extends RootDay {
      * @param options
      * @return minutes to reach goal
      */
-    private static Integer reachGoal(int x, int y, int goalX, int goalY, ArrayList<LightGrid<String>> blizzardStates, int minutes, ArrayList<int[]> visited, ArrayList<int[]> options) {
+    private static Integer reachGoal(int x, int y, int goalX, int goalY, ArrayList<LightGrid<String>> blizzardStates, int minutes, HashMap<Integer, ArrayList<int[]>> visited, ArrayList<int[]> options) {
         if (x == goalX && y == goalY) {
             return minutes;
         }
@@ -78,26 +97,11 @@ public class Day24 extends RootDay {
      * @param visited
      * @param options
      */
-    private static void addIfFree(int x, int y, int goalX, int goalY, int minutes, ArrayList<LightGrid<String>> blizzardStates, ArrayList<int[]> visited, ArrayList<int[]> options) {
+    private static void addIfFree(int x, int y, int goalX, int goalY, int minutes, ArrayList<LightGrid<String>> blizzardStates, HashMap<Integer, ArrayList<int[]>> visited, ArrayList<int[]> options) {
         int blizzardState = minutes % blizzardStates.size();
         
-        //if already visited
-        for (int i=0; i<visited.size(); i++) {
-            int[] v = visited.get(i);
-            if (v[0] == blizzardState && v[1] == x && v[2] == y) {
-                if (minutes < v[3]) {
-                    visited.remove(i);
-                    break;
-                } else {
-                    return;                    
-                }
-            }
-        }
-        visited.add(new int[] { blizzardState, x, y, minutes });
-        
-        LightGrid<String> grid = blizzardStates.get(blizzardState);
-        
         //check outside
+        LightGrid<String> grid = blizzardStates.get(blizzardState);
         if (x < 0 || grid.getWidth() <= x || y < 0 || grid.getHeight() <= y) {
             return;
         }
@@ -106,9 +110,24 @@ public class Day24 extends RootDay {
         if (grid.get(x, y).equals("#")) {
             return;
         }
-        
+
+        //if already visited
+        ArrayList<int[]> blizzardStatesVisited = visited.get(y);
+        for (int i=0; i<blizzardStatesVisited.size(); i++) {
+            int[] v = blizzardStatesVisited.get(i);
+            if (v[0] == blizzardState && v[1] == x && v[2] == y) {
+                if (minutes < v[3]) {
+                    visited.remove(i);
+                    break;
+                } else {
+                    return;
+                }
+            }
+        }
+        blizzardStatesVisited.add(new int[] { blizzardState, x, y, minutes });
+                
         //add option sorted by the best score
-        int score = MathOp.getManhattenDistance(goalX, goalY, x, y) + minutes;
+        int score = MathOp.manhattenDistance(goalX, goalY, x, y) + minutes;
         for (int i=0; i<options.size(); i++) {
             if (score < options.get(i)[3]) {
                 options.add(i, new int[] {x, y, minutes, score});

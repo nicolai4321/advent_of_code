@@ -9,6 +9,9 @@ public class Day17 extends RootDay {
         setInput2("input01.txt");
     }
 
+    /**
+     * How many units tall will the tower of rocks be after 2022 rocks have stopped falling?
+     */
     @Override
     public String run1(String input) {
         Board board = new Board(input.toCharArray());
@@ -17,6 +20,9 @@ public class Day17 extends RootDay {
         return board.getHighestPoint();
     }
 
+    /**
+     * How tall will the tower be after 1000000000000 rocks have stopped?
+     */
     @Override
     public String run2(String input) {
         Board board = new Board(input.toCharArray());
