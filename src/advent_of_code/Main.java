@@ -2,7 +2,6 @@ package advent_of_code;
 
 import java.util.ArrayList;
 
-import advent_of_code.utils.Interval;
 import advent_of_code.utils.Log;
 import advent_of_code.utils.RootDay;
 import advent_of_code.year2022.day01.Day01;
@@ -34,7 +33,21 @@ import advent_of_code.year2022.day25.Day25;
 public class Main {
     public static void main(String[] args) {
         ArrayList<RootDay> days2022 = getDaysFor2022();
-        runAll(days2022);
+        if (args.length == 0) {
+            Log.show("Running all days for 2022");
+            runAll(days2022);
+        } else if (args[0].matches("[0-9]+")) {
+            int day = Integer.parseInt(args[0]);
+            
+            if (day < 1 || 25 < day) {
+                Log.warn("Please provide a day between 1 and 25");
+            } else {
+                Log.show("Running day " + day + " for 2022");
+                days2022.get(day-1).run();   
+            }            
+        } else {
+            Log.warn("Invalid argument. Expected a number or no arguments");
+        }
     }
     
     private static void runAll(ArrayList<RootDay> days) {
