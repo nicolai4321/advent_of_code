@@ -3,6 +3,7 @@ package advent_of_code;
 import java.util.ArrayList;
 
 import advent_of_code.utils.Log;
+import advent_of_code.utils.MathOp;
 import advent_of_code.utils.RootDay;
 import advent_of_code.year2022.day01.Day01;
 import advent_of_code.year2022.day02.Day02;
@@ -28,13 +29,14 @@ import advent_of_code.year2022.day21.Day21;
 import advent_of_code.year2022.day22.Day22;
 import advent_of_code.year2022.day23.Day23;
 import advent_of_code.year2022.day24.Day24;
+import advent_of_code.year2022.day25.Day25;
 
 public class Main {
     public static void main(String[] args) {
         ArrayList<RootDay> days2022 = getDaysFor2022();
         //runAll(days2022);
         
-        new Day24().run();
+        new Day25().run();
     }
     
     private static void runAll(ArrayList<RootDay> days) {

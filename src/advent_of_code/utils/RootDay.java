@@ -82,15 +82,16 @@ public abstract class RootDay {
 	/**
 	 * Executes the two parts
 	 */
-	public void run() {
+	public void run() {	    
 		if (enableRun1) {
 		    if (input1 == null) {
                 throw new RuntimeException("No input defined for run1(). Use the method setInput1(fileName)");
             }
 		    
 		    Log.show("Starting run1...\n");
-			
+		    long timeStartRun1 = System.nanoTime();
 			String run1 = run1(input1);
+			long timeEndRun1 = System.nanoTime();
 			
 			if (enableTest1 && result1 != null && !result1.equals(run1)) {
 				throw new RuntimeException("Run 1 failed for " + day + "/" + year + "! Got '" + run1 + "' but '" + result1 + "' was expected");
@@ -98,6 +99,7 @@ public abstract class RootDay {
 			
 			String msg = SEPARATOR + "\n" +
 						 "Result part I:'" + run1 + "'\n" +
+						 ((timeEndRun1 - timeStartRun1)/1000000) + " ms\n" +
 						 ((enableTest1) ? "" : "## TEST DISABLED ##\n") +
 						 SEPARATOR + "\n";
 			
@@ -112,14 +114,18 @@ public abstract class RootDay {
             }
 		    
 			Log.show("Starting run2...\n");
+            long timeStartRun2 = System.nanoTime();
 			String run2 = run2(input2);
+	         long timeEndRun2 = System.nanoTime();
+
 
 			if (enableTest2 && result2 != null && !result2.equals(run2)) {
 				throw new RuntimeException("Run 2 failed for " + day + "/" + year + "! Got '" + run2 + "' but '" + result2 + "' was expected");
 			}
 
 			String msg = SEPARATOR + "\n" +
-						 "Result part II:'" + run2 + "'\n" +
+						 "Result part II:'" + run2 + "'\n" + 
+						 ((timeEndRun2 - timeStartRun2)/1000000) + " ms\n" +
 						 ((enableTest2) ? "" : "## TEST DISABLED ##\n") +
 						 SEPARATOR;
 			
