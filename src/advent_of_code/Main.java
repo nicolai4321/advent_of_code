@@ -2,8 +2,8 @@ package advent_of_code;
 
 import java.util.ArrayList;
 
+import advent_of_code.utils.Interval;
 import advent_of_code.utils.Log;
-import advent_of_code.utils.MathOp;
 import advent_of_code.utils.RootDay;
 import advent_of_code.year2022.day01.Day01;
 import advent_of_code.year2022.day02.Day02;
@@ -35,17 +35,12 @@ public class Main {
     public static void main(String[] args) {
         ArrayList<RootDay> days2022 = getDaysFor2022();
         runAll(days2022);
-        
-        //new Day18().run();
     }
     
     private static void runAll(ArrayList<RootDay> days) {
         Log.show("Run every day");
         
         for (int i=0; i<days.size(); i++) {
-            if (i+1 == 15) {
-                continue;
-            }
             RootDay day = days.get(i);
             Log.disable();
             long timeStart= System.nanoTime();

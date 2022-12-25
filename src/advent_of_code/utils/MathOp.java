@@ -35,7 +35,7 @@ public class MathOp {
      * @param x1
      * @return manhatten distance
      */
-    public static int manhattenDistance1D(int x0, int x1) {
-        return (Math.max(x0, x1) - Math.min(x0, x1));
+    public static int difference(int a, int b) {
+        return (Math.max(a, b) - Math.min(a, b));
     }
 }
