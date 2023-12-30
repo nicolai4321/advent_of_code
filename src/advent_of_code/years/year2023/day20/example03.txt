@@ -1,0 +1,3 @@
+broadcaster -> a,b
+%a -> rx
+&b -> rx

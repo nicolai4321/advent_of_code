@@ -1,5 +1,7 @@
 package advent_of_code.utils;
 
+import java.util.ArrayList;
+
 public class Grid<T> {
 	private T[][] grid;
 	private boolean verticalGoesUp;
@@ -49,6 +51,25 @@ public class Grid<T> {
 		return gridInt;
 	}
 
+    public static Grid<String> toStringGrid(Grid<Integer> grid) {
+        Grid<String> gridString = new Grid<String>(grid.getWidth(), grid.getHeight(), grid.verticalGoesUp);
+        gridString.setDivider(grid.getDivider());
+        
+        int shiftX = grid.getShiftX();
+        int shiftY = grid.getShiftY();
+        grid.shift(0, 0);
+        for (int x=0; x<grid.getWidth(); x++) {
+            for (int y=0; y<grid.getHeight(); y++) {
+                Integer value = grid.get(x, y);
+                gridString.set(x, y, value + "");
+            }
+        }
+        
+        grid.shift(shiftX, shiftY);
+        gridString.shift(shiftX, shiftY);
+        return gridString;
+    }
+	
 	public void set(T value) {
 		for (int x=0; x<getWidth(); x++) {
 			for (int y=0; y<getHeight(); y++) {
@@ -77,9 +98,24 @@ public class Grid<T> {
 		if (verticalGoesUp) {
 			return grid[(grid.length - 1) - y][x];
 		} else {
-			return grid[y][x];			
+			return grid[y][x];
 		}
 	}
+
+   public T safeGet(int x, int y) {
+        x += shiftX;
+        y += shiftY;
+
+        if (verticalGoesUp) {
+            y = (grid.length - 1) - y;
+        }
+        
+        if (y < 0 || grid.length <= y || x < 0 || grid[0].length <= x) {
+            return null;
+        }
+        
+        return grid[y][x];
+    }
 	
 	public int getWidth() {
 		return grid[0].length;
@@ -114,9 +150,9 @@ public class Grid<T> {
 				T value = grid[r][c];
 				if (value instanceof Boolean) {
 					Boolean b = (Boolean) value;
-					s += ((b == null) ? "" : ((b) ? t : f)) + divider; 
+					s += ((b == null) ? "" : ((b) ? t : f)) + divider;
 				} else {
-					s += value + divider;						
+					s += value + divider;
 				}
 			}
 			s = s.replaceAll(divider + "$", "") + "\n";
@@ -135,11 +171,12 @@ public class Grid<T> {
 		for (int y=0; y<height; y++) {
 			char[] row = strings[y].toCharArray();
 			for (int x=0; x<width; x++) {
-				T t = (T) (row[x] + "");
-				if (verticalGoesUp) {
-					set(x, (height-1) - y, t);
+			    T value = (T) (row[x] + "");
+			    
+			    if (verticalGoesUp) {
+					set(x, (height-1) - y, value);
 				} else {
-					set(x, y, t);
+					set(x, y, value);
 				}
 			}
 		}
@@ -169,7 +206,7 @@ public class Grid<T> {
                     if (r == y && c == x) {
                         s += string;
                     } else {
-                        s += value + divider;                        
+                        s += value + divider;
                     }
                 }
             }
@@ -192,12 +229,68 @@ public class Grid<T> {
                     } else if (r == y1 && c == x1) {
                         s += s1;
                     } else {
-                        s += value + divider;                        
+                        s += value + divider;
                     }
                 }
             }
             s = s.replaceAll(divider + "$", "") + "\n";
         }
         Log.show(s);
+    }
+
+    /**
+     * Replaces oldValue with newValue in all cells that has oldValue
+     * @param oldValue
+     * @param newValue
+     */
+    public void replace(T oldValue, T newValue) {
+        for (int r=0; r<grid.length; r++) {
+            for (int c=0; c<grid[0].length; c++) {
+                T value = grid[r][c];
+                if (value.equals(oldValue)) {
+                    grid[r][c] = newValue;
+                }
+            }
+        }
+    }
+    
+    public ArrayList<int[]> getNeighbours(int x, int y,  boolean includeDiagonal) {
+        x += shiftX;
+        y += shiftY;
+
+        int[][] potentials;
+        if (includeDiagonal) {
+            potentials = new int[][] {
+                {x - 1, y - 1},
+                {x - 1, y + 0},
+                {x - 1, y + 1},
+                {x + 1, y - 1},
+                {x + 1, y + 0},
+                {x + 1, y + 1},
+                {x + 0, y - 1},
+                {x + 0, y + 1}
+            };
+        } else {
+            potentials = new int[][] {
+                {x - 1, y + 0},
+                {x + 1, y + 0},
+                {x + 0, y - 1},
+                {x + 0, y + 1}
+            };
+        }
+        
+        ArrayList<int[]> neighbours = new ArrayList<int[]>();
+        for (int[] potential : potentials) {
+            if (isValidCoordinate(potential[0], potential[1])) {
+                neighbours.add(potential);
+            }
+        }
+        
+        return neighbours;
+    }
+    
+    private boolean isValidCoordinate(int x, int y) {
+        //IMPORTANT! Requires that x and y is with shift 
+        return 0 <= x && x < grid[0].length && 0 <= y && y < grid.length;
     }
 }

@@ -4,10 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Read {
-	private static String BASE_PATH = "src/advent_of_code/";
+	private static String BASE_PATH = "src/advent_of_code/years/";
 	
 	/**
 	 * prints file to quickly see the content
