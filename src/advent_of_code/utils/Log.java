@@ -55,6 +55,11 @@ public class Log {
 	 * @param lst
 	 */
 	public static <T> void show(ArrayList<T> lst) {
+	    if (lst.isEmpty()) {
+	        println("[]");
+	        return;
+	    }
+	    
 		String s = "[";
 		for (T type : lst) {
 			s += type + ",";

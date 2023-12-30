@@ -3,6 +3,8 @@ package advent_of_code.utils;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import advent_of_code.utils.math.big.BigInt;
+
 public class Lists extends ListConverter {
 	/**
 	 * @param input
@@ -99,7 +101,7 @@ public class Lists extends ListConverter {
 					}
 				}
 				
-				if (!includeEmpty && (value == null || value.isBlank())) {
+				if (!includeEmpty && (value == null || Text.isBlank(value))) {
 					continue;
 				}
 				
@@ -150,4 +152,65 @@ public class Lists extends ListConverter {
 		return list;
 
 	}
+	
+	/**
+     * @param lst
+     * @return min value in list
+     */
+    public static int min(ArrayList<Integer> lst) {
+        int min = Integer.MAX_VALUE;
+        
+        for (int i : lst) {
+            min = (i < min) ? i : min;
+        }
+        
+        return min;
+    }
+
+	/**
+	 * @param lst
+	 * @return max value in list
+	 */
+    public static int max(ArrayList<Integer> lst) {
+        int max = Integer.MIN_VALUE;
+        
+        for (int i : lst) {
+            max = (max < i) ? i : max;
+        }
+        
+        return max;
+    }
+
+    public static <T> String toString(T[] lst) {
+        String string = "[";
+        for (T t : lst) {
+            string += t + ",";
+        }
+        return string.replaceAll(",$", "") + "]";
+    }
+
+    /**
+     * Creates a new list and make a shallow copy of the contents
+     * @param tracks
+     * @return
+     */
+    public static <T> ArrayList<T> shallowCopy(ArrayList<T> lst) {
+        ArrayList<T> copy = new ArrayList<T>();
+        
+        for (T t : lst) {
+            copy.add(t);
+        }
+        
+        return copy;
+    }
+
+    public static BigInt[] stringsToBigInts(String[] lst) {
+        BigInt[] newLst = new BigInt[lst.length];
+        
+        for (int i=0; i<lst.length; i++) {
+            newLst[i] = new BigInt(lst[i]);
+        }
+        
+        return newLst;
+    }
 }

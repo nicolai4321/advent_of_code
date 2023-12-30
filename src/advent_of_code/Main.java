@@ -1,98 +1,118 @@
 package advent_of_code;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
+import advent_of_code.time.RootDay;
+import advent_of_code.time.Year;
 import advent_of_code.utils.Log;
-import advent_of_code.utils.RootDay;
-import advent_of_code.year2022.day01.Day01;
-import advent_of_code.year2022.day02.Day02;
-import advent_of_code.year2022.day03.Day03;
-import advent_of_code.year2022.day04.Day04;
-import advent_of_code.year2022.day05.Day05;
-import advent_of_code.year2022.day06.Day06;
-import advent_of_code.year2022.day07.Day07;
-import advent_of_code.year2022.day08.Day08;
-import advent_of_code.year2022.day09.Day09;
-import advent_of_code.year2022.day10.Day10;
-import advent_of_code.year2022.day11.Day11;
-import advent_of_code.year2022.day12.Day12;
-import advent_of_code.year2022.day13.Day13;
-import advent_of_code.year2022.day14.Day14;
-import advent_of_code.year2022.day15.Day15;
-import advent_of_code.year2022.day16.Day16;
-import advent_of_code.year2022.day17.Day17;
-import advent_of_code.year2022.day18.Day18;
-import advent_of_code.year2022.day19.Day19;
-import advent_of_code.year2022.day20.Day20;
-import advent_of_code.year2022.day21.Day21;
-import advent_of_code.year2022.day22.Day22;
-import advent_of_code.year2022.day23.Day23;
-import advent_of_code.year2022.day24.Day24;
-import advent_of_code.year2022.day25.Day25;
+import advent_of_code.years.year1000.Year1000;
+import advent_of_code.years.year2017.Year2017;
+import advent_of_code.years.year2018.Year2018;
+import advent_of_code.years.year2019.Year2019;
+import advent_of_code.years.year2020.Year2020;
+import advent_of_code.years.year2021.Year2021;
+import advent_of_code.years.year2022.Year2022;
+import advent_of_code.years.year2023.Year2023;
 
 public class Main {
+    public static HashMap<Integer, Year> years; 
+    
     public static void main(String[] args) {
-        ArrayList<RootDay> days2022 = getDaysFor2022();
+        years = new HashMap<Integer, Year>();
+        years.put(2017, new Year2017());
+        years.put(2018, new Year2018());
+        years.put(2019, new Year2019());
+        years.put(2020, new Year2020());
+        years.put(2021, new Year2021());
+        years.put(2022, new Year2022());
+        years.put(2023, new Year2023());
+
         if (args.length == 0) {
-            Log.show("Running all days for 2022");
-            runAll(days2022);
-        } else if (args[0].matches("[0-9]+")) {
-            int day = Integer.parseInt(args[0]);
+            Log.show("Running every year");
             
-            if (day < 1 || 25 < day) {
+            for (Integer yearNr : years.keySet()) {
+                Year year = years.get(yearNr);
+                runAllDays(year.getYear(), year.getDays());
+            }
+        } else if (args.length == 1 && isInt(args[0])) {
+            int yearNr = Integer.parseInt(args[0]);
+            Year year = years.get(yearNr);
+            
+            if (yearNr == 1000) {
+                runDay(new Year1000().getDays().get(1), false);
+                return;
+            }
+
+            if (year == null) {
+                Log.warn("Year " + yearNr + " is not implemented.");
+                return;
+            }
+            
+            runAllDays(year.getYear(), year.getDays());
+        } else if (args.length == 2 && isInt(args[0]) && isInt(args[1])) {
+            int yearNr = Integer.parseInt(args[0]);
+            Year year = years.get(yearNr);
+            
+            if (year == null) {
+                Log.warn("Year " + yearNr + " is not implemented.");
+                return;
+            }
+            
+            int dayNr = Integer.parseInt(args[1]);
+            
+            if (dayNr < 1 || 25 < dayNr) {
                 Log.warn("Please provide a day between 1 and 25");
             } else {
-                Log.show("Running day " + day + " for 2022");
-                days2022.get(day-1).run();   
-            }            
+                RootDay day = year.getDays().get(dayNr);
+                
+                if (day == null) {
+                    throw new RuntimeException("Could not find day " + dayNr + " year " + yearNr);
+                }
+                
+                runDay(day, false);
+            }
         } else {
-            Log.warn("Invalid argument. Expected a number or no arguments");
+            Log.warn("Invalid argument. Expected 0, 1 or 2 numbers");
         }
     }
     
-    private static void runAll(ArrayList<RootDay> days) {
-        Log.show("Run every day");
-        
-        for (int i=0; i<days.size(); i++) {
-            RootDay day = days.get(i);
-            Log.disable();
-            long timeStart= System.nanoTime();
-            day.run();
-            long timeEnd = System.nanoTime();
-            Log.enable();
-            Log.show("  Day " + (i+1) + " " + ((timeEnd - timeStart)/1000000) + " ms");
+    /**
+     * @param s
+     * @return true if s is an int
+     */
+    private static boolean isInt(String s) {
+        return s.matches("[0-9]+");
+    }
+    
+    /**
+     * Runs all days for a given year
+     * @param year
+     * @param days
+     */
+    private static void runAllDays(int year, HashMap<Integer, RootDay> days) {
+        for (int dayNr : days.keySet()) {
+            RootDay day = days.get(dayNr);
+            runDay(day, true);
         }
         
         Log.show("Done");
     }
     
-    private static ArrayList<RootDay> getDaysFor2022() {
-        ArrayList<RootDay> days2022 = new ArrayList<RootDay>();
-        days2022.add(new Day01());
-        days2022.add(new Day02());
-        days2022.add(new Day03());
-        days2022.add(new Day04());
-        days2022.add(new Day05());
-        days2022.add(new Day06());
-        days2022.add(new Day07());
-        days2022.add(new Day08());
-        days2022.add(new Day09());
-        days2022.add(new Day10());
-        days2022.add(new Day11());
-        days2022.add(new Day12());
-        days2022.add(new Day13());
-        days2022.add(new Day14());
-        days2022.add(new Day15());
-        days2022.add(new Day16());
-        days2022.add(new Day17());
-        days2022.add(new Day18());
-        days2022.add(new Day19());
-        days2022.add(new Day20());
-        days2022.add(new Day21());
-        days2022.add(new Day22());
-        days2022.add(new Day23());
-        days2022.add(new Day24());
-        days2022.add(new Day25());
-        return days2022;
+    /**
+     * Runs the task for the specified day. The log can be disabled for the day
+     * @param day
+     * @param disableDayLog
+     */
+    private static void runDay(RootDay day, boolean disableDayLog) {
+        if (disableDayLog) {
+            Log.disable();
+        }
+        long timeStart= System.nanoTime();
+        day.run();
+        long timeEnd = System.nanoTime();
+        if (disableDayLog) {
+            Log.enable();
+            Log.show("  Year " + day.getYear() + " Day " + day.getDay() + ": " + ((timeEnd - timeStart)/1000000) + " ms");
+        }
     }
 }
